@@ -39,7 +39,7 @@ public class User {
     @EqualsAndHashCode.Exclude
     private Set<Ticket> tickets = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "users")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Movie> favouriteMovies = new HashSet<>();

@@ -30,7 +30,8 @@ public class Movie {
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "movie")
     private Set<FilmShow> filmShows = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "user_favourite_movies", joinColumns = @JoinColumn(name = "movie_id"),
+    inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> users = new HashSet<>();
 }
