@@ -29,9 +29,4 @@ public class Movie {
     @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "movie")
     private FilmShow filmShow;
 
-    @ManyToMany(mappedBy = "movies")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Set<User> users;
-
 }

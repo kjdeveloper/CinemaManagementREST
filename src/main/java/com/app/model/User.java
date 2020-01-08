@@ -32,11 +32,6 @@ public class User {
     private Set<Role> roles;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "user_movies", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id"))
-    private Set<Movie> movies;
-
-    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "user_tickets", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     @ToString.Exclude

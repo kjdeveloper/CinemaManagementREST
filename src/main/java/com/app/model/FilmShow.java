@@ -31,7 +31,7 @@ public class FilmShow {
     private Movie movie;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "filmShow_tickets", joinColumns = @JoinColumn(name = "filmshow_id"),
+    @JoinTable(name = "filmShow_tickets", joinColumns = @JoinColumn(name = "filmShow_id"),
     inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
