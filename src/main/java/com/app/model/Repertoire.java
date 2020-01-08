@@ -25,7 +25,7 @@ public class Repertoire {
     @EqualsAndHashCode.Exclude
     private Set<FilmShow> filmShows = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cinema_id")
     private Cinema cinema;
 

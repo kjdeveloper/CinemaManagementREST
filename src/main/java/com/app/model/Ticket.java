@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -24,9 +25,9 @@ public class Ticket {
     private Boolean reservation;
 
     @ManyToMany(mappedBy = "tickets")
-    private Set<FilmShow> filmShows;
+    private Set<FilmShow> filmShows = new HashSet<>();
 
     @ManyToMany(mappedBy = "tickets")
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 }
 

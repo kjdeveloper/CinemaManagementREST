@@ -3,6 +3,7 @@ package com.app.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -29,12 +30,17 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "user_tickets", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<Ticket> tickets;
+    private Set<Ticket> tickets = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<Movie> favouriteMovies = new HashSet<>();
 }

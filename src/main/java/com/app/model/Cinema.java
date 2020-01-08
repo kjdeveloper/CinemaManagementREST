@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -25,7 +26,7 @@ public class Cinema {
     @Enumerated(EnumType.STRING)
     private City city;
 
-    @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "cinema")
-    private Repertoire repertoire;
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "cinema")
+    private Set<Repertoire> repertoires = new HashSet<>();
 
 }

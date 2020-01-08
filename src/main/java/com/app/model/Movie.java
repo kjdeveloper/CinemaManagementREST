@@ -4,6 +4,7 @@ import com.app.model.enums.Genre;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -26,7 +27,10 @@ public class Movie {
     @Enumerated(EnumType.STRING)
     private Genre genre;
 
-    @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "movie")
-    private FilmShow filmShow;
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "movie")
+    private Set<FilmShow> filmShows = new HashSet<>();
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

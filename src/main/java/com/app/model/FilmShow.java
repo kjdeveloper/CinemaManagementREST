@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -21,20 +22,21 @@ public class FilmShow {
     private LocalDateTime startTime;
     private Integer cinemaHall;
     private Integer duration;
+    private Integer ticketsAvailable;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "repertoire_id")
     private Repertoire repertoire;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "filmShow_tickets", joinColumns = @JoinColumn(name = "filmShow_id"),
-    inverseJoinColumns = @JoinColumn(name = "ticket_id"))
+            inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<Ticket> tickets;
+    private Set<Ticket> tickets = new HashSet<>();
 
 }
