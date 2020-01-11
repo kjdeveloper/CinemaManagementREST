@@ -3,6 +3,9 @@ package com.app;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import javax.annotation.PostConstruct;
+import java.util.TimeZone;
+
 @SpringBootApplication
 public class CinemaRestApiApplication {
 
@@ -10,4 +13,8 @@ public class CinemaRestApiApplication {
         SpringApplication.run(CinemaRestApiApplication.class, args);
     }
 
+    @PostConstruct
+    void init() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    }
 }
