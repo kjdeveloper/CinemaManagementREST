@@ -1,4 +1,4 @@
-package com.app.dto;
+package com.app.dto.downloadingDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserDto {
+public class UserDownloadDto {
 
     private Long id;
     private String name;

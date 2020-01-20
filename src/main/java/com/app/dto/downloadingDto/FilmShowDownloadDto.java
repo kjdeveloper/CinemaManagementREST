@@ -1,4 +1,4 @@
-package com.app.dto;
+package com.app.dto.downloadingDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FilmShowDto {
+public class FilmShowDownloadDto {
 
     private Long id;
     private LocalDateTime startTime;
@@ -19,6 +19,4 @@ public class FilmShowDto {
     private Integer duration;
     private Integer ticketsAvailable;
 
-    private RepertoireDto repertoireDto;
-    private MovieDto movieDto;
 }

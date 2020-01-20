@@ -1,4 +1,4 @@
-package com.app.dto;
+package com.app.dto.addingDto;
 
 import com.app.model.enums.Genre;
 import lombok.AllArgsConstructor;
@@ -10,9 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MovieDto {
+public class MovieAddDto {
 
-    private Long id;
     private String title;
     private String description;
     private String director;
