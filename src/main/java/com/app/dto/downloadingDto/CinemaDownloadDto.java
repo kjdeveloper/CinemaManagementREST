@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,4 +17,5 @@ public class CinemaDownloadDto {
     private Long id;
     private String name;
     private City city;
+    Set<RepertoireDownloadDto> repertoires;
 }

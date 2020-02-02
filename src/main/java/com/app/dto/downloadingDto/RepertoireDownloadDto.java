@@ -1,6 +1,5 @@
 package com.app.dto.downloadingDto;
 
-import com.app.dto.addingDto.CinemaAddDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +16,6 @@ public class RepertoireDownloadDto {
 
     private Long id;
     private LocalDate date;
-    private CinemaAddDto cinemaAddDto;
+    private CinemaDownloadDto cinema;
     private Set<FilmShowDownloadDto> filmShows;
 }

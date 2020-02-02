@@ -1,11 +1,13 @@
 package com.app.dto.addingDto;
 
+import com.app.model.enums.TicketType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -13,8 +15,11 @@ import java.util.Set;
 @Builder
 public class TicketAddDto {
 
-    private Integer orderedQuantity;
+    private LocalDateTime dateOfPurchase;
     private Boolean reservation;
-    private Set<UserAddDto> users;
-    private Set<FilmShowAddDto> filmShows;
+    private BigDecimal price;
+    TicketType ticketType;
+
+    private UserAddDto user;
+    private FilmShowAddDto filmShow;
 }

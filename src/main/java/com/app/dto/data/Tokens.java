@@ -1,4 +1,4 @@
-package com.app.dto;
+package com.app.dto.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LoginDto {
-    private String username;
-    private String password;
+public class Tokens {
+    private String accessToken;
+    private String refreshToken;
 }

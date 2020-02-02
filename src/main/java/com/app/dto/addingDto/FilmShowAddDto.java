@@ -16,6 +16,5 @@ public class FilmShowAddDto {
     private LocalDateTime startTime;
     private Integer cinemaHall;
     private Integer duration;
-    private Integer ticketsAvailable;
-
+    private MovieAddDto movie;
 }

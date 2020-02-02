@@ -1,4 +1,4 @@
-package com.app.dto.downloadingDto;
+package com.app.dto.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,12 +11,16 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserDownloadDto {
+public class RegisterDto {
 
-    private Long id;
     private String name;
     private String surname;
     private Integer age;
     private String email;
-    private Set<String> role;
+
+
+    private String username;
+    private String password;
+    private String passwordConfirmation;
+    private Set<String> roles;
 }

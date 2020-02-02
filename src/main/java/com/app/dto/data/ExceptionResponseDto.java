@@ -1,4 +1,4 @@
-package com.app.dto;
+package com.app.dto.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RegisterDto {
-    private String username;
-    private String password;
-    private String passwordConfirmation;
+public class ExceptionResponseDto {
+    private String message;
 }

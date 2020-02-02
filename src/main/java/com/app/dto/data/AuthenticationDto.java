@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Info<T> {
-
-    private T data;
-    private String error;
-
+public class AuthenticationDto {
+    private String username;
+    private String password;
 }

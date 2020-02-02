@@ -14,8 +14,7 @@ import java.util.Set;
 public class TicketDownloadDto {
 
     private Long id;
-    private Integer orderedQuantity;
     private Boolean reservation;
-    private Set<UserDownloadDto> users;
-    private Set<FilmShowDownloadDto> filmShows;
+    private UserDownloadDto user;
+    private FilmShowDownloadDto filmShow;
 }

@@ -14,6 +14,4 @@ public class CinemaAddDto {
 
     private String name;
     private City city;
-
-
 }
