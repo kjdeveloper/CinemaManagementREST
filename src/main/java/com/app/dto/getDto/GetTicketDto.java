@@ -1,6 +1,5 @@
-package com.app.dto.addingDto;
+package com.app.dto.getDto;
 
-import com.app.model.enums.City;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CinemaAddDto {
+public class GetTicketDto {
 
-    private String name;
-    private City city;
+    private Long id;
+    private GetUserDto user;
+    private GetFilmShowDto filmShow;
+
 }

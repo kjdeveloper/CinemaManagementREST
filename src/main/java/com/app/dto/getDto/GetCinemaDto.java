@@ -1,5 +1,6 @@
-package com.app.dto.downloadingDto;
+package com.app.dto.getDto;
 
+import com.app.model.enums.City;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +12,10 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TicketDownloadDto {
+public class GetCinemaDto {
 
     private Long id;
-    private Boolean reservation;
-    private UserDownloadDto user;
-    private FilmShowDownloadDto filmShow;
+    private String name;
+    private City city;
+    Set<GetRepertoireDto> repertoires;
 }

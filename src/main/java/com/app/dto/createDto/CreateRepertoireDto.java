@@ -1,4 +1,4 @@
-package com.app.dto.addingDto;
+package com.app.dto.createDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,9 +12,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RepertoireAddDto {
+public class CreateRepertoireDto {
 
     private LocalDate date;
-    private CinemaAddDto cinema;
-    private Set<FilmShowAddDto> filmShows;
+    private CreateCinemaDto cinema;
+    private Set<CreateFilmShowDto> filmShows;
 }

@@ -1,4 +1,4 @@
-package com.app.dto.downloadingDto;
+package com.app.dto.getDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,14 +12,13 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FilmShowDownloadDto {
+public class GetFilmShowDto {
 
     private Long id;
     private LocalDateTime startTime;
-    private Integer cinemaHall;
-    private Integer duration;
+    private GetCinemaHallDto cinemaHall;
     private Integer ticketsAvailable;
-    private MovieDownloadDto movie;
-    Set<TicketDownloadDto> tickets;
+    private GetMovieDto movie;
+    Set<GetTicketDto> tickets;
 
 }

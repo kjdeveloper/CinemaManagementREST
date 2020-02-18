@@ -1,4 +1,4 @@
-package com.app.dto.downloadingDto;
+package com.app.dto.getDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,10 +12,10 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RepertoireDownloadDto {
+public class GetRepertoireDto {
 
     private Long id;
     private LocalDate date;
-    private CinemaDownloadDto cinema;
-    private Set<FilmShowDownloadDto> filmShows;
+    private GetCinemaDto cinema;
+    private Set<GetFilmShowDto> filmShows;
 }

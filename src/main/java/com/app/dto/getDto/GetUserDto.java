@@ -1,6 +1,5 @@
-package com.app.dto.downloadingDto;
+package com.app.dto.getDto;
 
-import com.app.model.enums.City;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,13 +8,15 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class CinemaDownloadDto {
+public class GetUserDto {
 
     private Long id;
     private String name;
-    private City city;
-    Set<RepertoireDownloadDto> repertoires;
+    private String username;
+    private Integer age;
+    private String email;
+    private Set<String> role;
 }
