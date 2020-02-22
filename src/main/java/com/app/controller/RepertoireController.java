@@ -20,7 +20,7 @@ public class RepertoireController {
 
     private final RepertoireService repertoireService;
 
-    @GetMapping
+    @GetMapping("/byDateAndCinema")
     public ResponseEntity<Info<List<GetRepertoireDto>>> getAllByDateAndCity(@RequestBody LocalDate date, @RequestBody City city) {
         return ResponseEntity.ok(Info.<List<GetRepertoireDto>>builder()
                 .data(repertoireService.findByDateAndCinemaCity(date, city))
@@ -28,7 +28,7 @@ public class RepertoireController {
     }
 
     @GetMapping
-    public ResponseEntity<Info<List<GetRepertoireDto>>> getALl() {
+    public ResponseEntity<Info<List<GetRepertoireDto>>> getAll() {
         return ResponseEntity.ok(Info.<List<GetRepertoireDto>>builder()
                 .data(repertoireService.findAll())
                 .build());
