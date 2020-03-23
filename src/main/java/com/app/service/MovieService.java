@@ -2,12 +2,12 @@ package com.app.service;
 
 import com.app.dto.createDto.CreateMovieDto;
 import com.app.dto.getDto.GetMovieDto;
-import com.app.dto.getDto.GetUserDto;
 import com.app.exception.AppException;
 import com.app.model.FilmShow;
 import com.app.model.Movie;
 import com.app.model.User;
 import com.app.model.enums.Genre;
+import com.app.repository.FilmShowRepository;
 import com.app.repository.MovieRepository;
 import com.app.repository.RepertoireRepository;
 import com.app.repository.UserRepository;
@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +31,7 @@ public class MovieService {
     private final MovieRepository movieRepository;
     private final RepertoireRepository repertoireRepository;
     private final UserRepository userRepository;
+    private final FilmShowRepository filmShowRepository;
 
     public List<GetMovieDto> findAll() {
         return movieRepository.findAll()
@@ -39,6 +41,11 @@ public class MovieService {
     }
 
     public GetMovieDto findById(Long id) {
+
+        if (Objects.isNull(id)){
+            throw new AppException("Id is null");
+        }
+
         return movieRepository.findById(id)
                 .stream()
                 .map(GetMappers::fromMovieToGetMovieDto)
@@ -47,6 +54,11 @@ public class MovieService {
     }
 
     public List<GetMovieDto> findByTitle(String title) {
+
+        if (Objects.isNull(title)){
+            throw new AppException("Title is null");
+        }
+
         return movieRepository
                 .findByTitle(title)
                 .stream()
@@ -55,6 +67,11 @@ public class MovieService {
     }
 
     public List<GetMovieDto> findByGenre(Genre genre) {
+
+        if (Objects.isNull(genre)){
+            throw new AppException("Genre is null");
+        }
+
         return movieRepository
                 .findByGenre(genre)
                 .stream()
@@ -62,9 +79,13 @@ public class MovieService {
                 .collect(Collectors.toList());
     }
 
-    public List<GetMovieDto> findByDateBetweenGiven(LocalDate from, LocalDate to) {
+    public List<GetMovieDto> findByDateBetweenGiven(Map<String, LocalDate> dates) {
+        if (Objects.isNull(dates)){
+            throw new AppException("Dates is null");
+        }
+
         return repertoireRepository
-                .findByDateBetween(from, to)
+                .findByDateBetween(dates.get("from"), dates.get("to"))
                 .stream()
                 .flatMap(re -> re.getFilmShows()
                         .stream())
@@ -76,7 +97,7 @@ public class MovieService {
     }
 
     public Long addOne(CreateMovieDto createMovieDto) {
-        if (createMovieDto == null) {
+        if (Objects.isNull(createMovieDto)) {
             throw new AppException("Movie is null");
         }
         if (movieRepository.findByTitleAndDirector(createMovieDto.getTitle(), createMovieDto.getDirector()).isPresent()) {
@@ -91,10 +112,10 @@ public class MovieService {
     }
 
     public Long update(Long id, CreateMovieDto createMovieDto) {
-        if (id == null) {
+        if (Objects.isNull(id)) {
             throw new AppException("id is null");
         }
-        if (createMovieDto == null) {
+        if (Objects.isNull(createMovieDto)) {
             throw new AppException("Movie is null");
         }
 
@@ -113,13 +134,16 @@ public class MovieService {
     }
 
     public Long deleteById(Long id) {
-        if (id == null) {
+        if (Objects.isNull(id)) {
             throw new AppException("id is null");
         }
 
         Movie movie = movieRepository
                 .findById(id)
                 .orElseThrow(() -> new AppException("Movie with id " + id + " doesn't exist"));
+
+        filmShowRepository.findAllByMovie_TitleAndMovie_Director(movie.getTitle(), movie.getDirector())
+                .forEach(f -> f.setMovie(null));
 
         movieRepository.delete(movie);
         return movie.getId();
@@ -128,15 +152,18 @@ public class MovieService {
     public Long deleteAll() {
         long rows = movieRepository.count();
 
+        filmShowRepository.findAll()
+                .forEach(f -> f.setMovie(null));
+
         movieRepository.deleteAll();
         return rows;
     }
 
     public Long addToFavourites(Long userId, Long movieId) {
-        if (userId == null) {
+        if (Objects.isNull(userId)) {
             throw new AppException("User id is null");
         }
-        if (movieId == null) {
+        if (Objects.isNull(movieId)) {
             throw new AppException("Movie id is null");
         }
 
@@ -151,10 +178,10 @@ public class MovieService {
     }
 
     public Long deleteFromFavourites(Long userId, Long movieId) {
-        if (userId == null) {
+        if (Objects.isNull(userId)) {
             throw new AppException("User id is null");
         }
-        if (movieId == null) {
+        if (Objects.isNull(movieId)) {
             throw new AppException("Movie id is null");
         }
 

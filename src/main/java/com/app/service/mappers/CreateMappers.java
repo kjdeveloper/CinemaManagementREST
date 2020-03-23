@@ -21,27 +21,28 @@ public interface CreateMappers {
     static Cinema fromCreateCinemaDtoToCinema(CreateCinemaDto createCinemaDto) {
         return createCinemaDto == null ? null : Cinema.builder()
                 .city(createCinemaDto.getCity())
+                .name(createCinemaDto.getName())
                 .build();
     }
 
     static CinemaHall fromCreateCinemaHallDtoToCinemaHall(CreateCinemaHallDto cinemaHallDto) {
         return cinemaHallDto == null ? null : CinemaHall.builder()
-                .places(new HashSet<>())
+                .name(cinemaHallDto.getName())
+                .type(cinemaHallDto.getCinemaHallType())
                 .filmShow(cinemaHallDto.getCreateFilmShowDto() == null ? null : fromCreateFilmShowDtoToFilmShow(cinemaHallDto.getCreateFilmShowDto()))
+                //.places(new HashSet<>())
                 .build();
     }
 
     static FilmShow fromCreateFilmShowDtoToFilmShow(CreateFilmShowDto createFilmShowDto) {
         return createFilmShowDto == null ? null : FilmShow.builder()
-                .cinemaHall(createFilmShowDto.getCinemaHall() == null ? null : fromCreateCinemaHallDtoToCinemaHall(createFilmShowDto.getCinemaHall()))
                 .startTime(createFilmShowDto.getStartTime())
-                .movie(createFilmShowDto.getMovie() == null ? null : fromCreateMovieDtoToMovie(createFilmShowDto.getMovie()))
+                .ticketsAvailable(createFilmShowDto.getTicketsAvailable())
                 .build();
     }
 
     static Repertoire fromCreateRepertoireDtoToRepertoire(CreateRepertoireDto createRepertoireDto) {
         return createRepertoireDto == null ? null : Repertoire.builder()
-                .cinema(createRepertoireDto.getCinema() == null ? null : fromCreateCinemaDtoToCinema(createRepertoireDto.getCinema()))
                 .date(createRepertoireDto.getDate())
                 .filmShows(new HashSet<>())
                 .build();
@@ -64,5 +65,11 @@ public interface CreateMappers {
                 .build();
     }
 
+    /*static Place fromCreatePlaceDtoToPlace(CreatePlaceDto createPlaceDto){
+        return createPlaceDto == null ? null : Place.builder()
+                .row(createPlaceDto.getRow())
+                .number(createPlaceDto.getNumber())
+                .build();
+    }*/
 
 }

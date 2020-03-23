@@ -7,10 +7,9 @@ import com.app.service.CinemaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jmx.export.naming.IdentityNamingStrategy;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @RestController
@@ -42,6 +41,7 @@ public class CinemaController {
                 HttpStatus.OK);
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<Info<Long>> update(@PathVariable Long id, @RequestBody CreateCinemaDto cinemaDto) {
         return new ResponseEntity<>(Info.<Long>builder()
@@ -58,7 +58,7 @@ public class CinemaController {
                 HttpStatus.OK);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/all")
     public ResponseEntity<Info<Long>> deleteAll() {
         return new ResponseEntity<>(Info.<Long>builder()
                 .data(cinemaService.deleteAll())

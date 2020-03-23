@@ -38,6 +38,9 @@ public class SecurityService {
     }
 
     public GetUserDto findUserById(Long id) {
+        if (Objects.isNull(id)){
+            throw new AppException("id is null");
+        }
         return userRepository.
                 findById(id)
                 .map(GetMappers::fromUserToGetUserDto)
@@ -46,7 +49,7 @@ public class SecurityService {
 
     public Long register(CreateUserDto userDto) {
 
-        if (userDto == null) {
+        if (Objects.isNull(userDto)) {
             throw new AppException("register is null");
         }
 
@@ -71,11 +74,11 @@ public class SecurityService {
     }
 
     public Long update(Long id, CreateUserDto userDto) {
-        if (id == null) {
+        if (Objects.isNull(id)) {
             throw new AppException("id is null");
         }
 
-        if (userDto == null) {
+        if (Objects.isNull(userDto)) {
             throw new AppException("user is null");
         }
 
@@ -104,10 +107,10 @@ public class SecurityService {
     }
 
     public Long changeParam(Long id, Map<String, String> params) {
-        if (id == null) {
+        if (Objects.isNull(id)) {
             throw new AppException("id is null");
         }
-        if (params == null) {
+        if (Objects.isNull(params)) {
             throw new AppException("params are null");
         }
 
@@ -132,7 +135,7 @@ public class SecurityService {
     }
 
     public Long remove(Long id) {
-        if (id == null) {
+        if (Objects.isNull(id)) {
             throw new AppException("id is null");
         }
 

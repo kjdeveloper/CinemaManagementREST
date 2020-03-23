@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,29 +21,29 @@ public class MovieController {
 
     private final MovieService movieService;
 
-    @GetMapping
+    @GetMapping("/findAll")
     public ResponseEntity<Info<List<GetMovieDto>>> getAllMovies() {
         return ResponseEntity.ok(Info.<List<GetMovieDto>>builder()
                 .data(movieService.findAll())
                 .build());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Info<GetMovieDto>> update(@PathVariable Long id) {
+    @GetMapping("/byId/{id}")
+    public ResponseEntity<Info<GetMovieDto>> getById(@PathVariable Long id) {
         return new ResponseEntity<>(Info.<GetMovieDto>builder()
                 .data(movieService.findById(id))
                 .build(),
                 HttpStatus.OK);
     }
 
-    @GetMapping("/{genre}")
+    @GetMapping("/byGenre/{genre}")
     public ResponseEntity<Info<List<GetMovieDto>>> getAllMoviesByGenre(@PathVariable Genre genre) {
         return ResponseEntity.ok(Info.<List<GetMovieDto>>builder()
                 .data(movieService.findByGenre(genre))
                 .build());
     }
 
-    @GetMapping("/{title}")
+    @GetMapping("/byTitle/{title}")
     public ResponseEntity<Info<List<GetMovieDto>>> getAllMoviesByTitle(@PathVariable String title) {
         return ResponseEntity.ok(Info.<List<GetMovieDto>>builder()
                 .data(movieService.findByTitle(title))
@@ -50,13 +51,13 @@ public class MovieController {
     }
 
     @GetMapping("/betweenDates")
-    public ResponseEntity<Info<List<GetMovieDto>>> getAllMovies(@RequestBody LocalDate from, @RequestBody LocalDate to) {
+    public ResponseEntity<Info<List<GetMovieDto>>> getAllMoviesBetweenDates(@RequestBody Map<String, LocalDate> dates) {
         return ResponseEntity.ok(Info.<List<GetMovieDto>>builder()
-                .data(movieService.findByDateBetweenGiven(from, to))
+                .data(movieService.findByDateBetweenGiven(dates))
                 .build());
     }
 
-    @PostMapping("/addMovie")
+    @PostMapping
     public ResponseEntity<Info<Long>> addOne(@RequestBody CreateMovieDto movie) {
         return new ResponseEntity<>(Info.<Long>builder()
                 .data(movieService.addOne(movie))
@@ -71,23 +72,7 @@ public class MovieController {
                 .build(),
                 HttpStatus.OK);
     }
-
-    @DeleteMapping("{id}")
-    public ResponseEntity<Info<Long>> deleteById(@PathVariable Long id) {
-        return new ResponseEntity<>(Info.<Long>builder()
-                .data(movieService.deleteById(id))
-                .build(),
-                HttpStatus.OK);
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Info<Long>> deleteAll() {
-        return new ResponseEntity<>(Info.<Long>builder()
-                .data(movieService.deleteAll())
-                .build(),
-                HttpStatus.OK);
-    }
-
+        //dorobic post
     @PostMapping("/addToFavourite/{userId}/{movieId}")
     public ResponseEntity<Info<Long>> addToFavourites(@PathVariable Long userId, @PathVariable Long movieId) {
         return new ResponseEntity<>(Info.<Long>builder()
@@ -95,7 +80,7 @@ public class MovieController {
                 .build(),
                 HttpStatus.OK);
     }
-
+        //dorobic post
     @DeleteMapping("/{userId}/{movieId}")
     public ResponseEntity<Info<Long>> deleteMovieFromFavourites(@PathVariable Long userId, @PathVariable Long movieId) {
         return new ResponseEntity<>(Info.<Long>builder()
@@ -103,4 +88,21 @@ public class MovieController {
                 .build(),
                 HttpStatus.OK);
     }
+
+    @DeleteMapping("/all")
+    public ResponseEntity<Info<Long>> deleteAll() {
+        return new ResponseEntity<>(Info.<Long>builder()
+                .data(movieService.deleteAll())
+                .build(),
+                HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Info<Long>> deleteById(@PathVariable Long id) {
+        return new ResponseEntity<>(Info.<Long>builder()
+                .data(movieService.deleteById(id))
+                .build(),
+                HttpStatus.OK);
+    }
+
 }

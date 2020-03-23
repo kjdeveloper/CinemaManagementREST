@@ -4,8 +4,10 @@ import com.app.dto.createDto.CreateFilmShowDto;
 import com.app.dto.getDto.GetFilmShowDto;
 import com.app.exception.AppException;
 import com.app.model.Cinema;
+import com.app.model.CinemaHall;
 import com.app.model.FilmShow;
 import com.app.model.Movie;
+import com.app.repository.CinemaHallRepository;
 import com.app.repository.CinemaRepository;
 import com.app.repository.FilmShowRepository;
 import com.app.repository.MovieRepository;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +30,7 @@ public class FilmShowService {
     private final FilmShowRepository filmShowRepository;
     private final MovieRepository movieRepository;
     private final CinemaRepository cinemaRepository;
+    private final CinemaHallRepository cinemaHallRepository;
 
     public List<GetFilmShowDto> findAll() {
         return filmShowRepository.findAll()
@@ -36,7 +40,7 @@ public class FilmShowService {
     }
 
     public List<GetFilmShowDto> findAllFilmShowsInParticularCinema(Long cinemaId) {
-        if (cinemaId == null) {
+        if (Objects.isNull(cinemaId)) {
             throw new AppException("id is null");
         }
 
@@ -46,62 +50,70 @@ public class FilmShowService {
         return cinema.getRepertoires()
                 .stream()
                 .flatMap(f -> f.getFilmShows()
-                        .stream().map(GetMappers::fromFilmShowToGetFilmShowDto)).distinct().collect(Collectors.toList());
+                        .stream().map(GetMappers::fromFilmShowToGetFilmShowDto)).collect(Collectors.toList());
     }
 
     public List<GetFilmShowDto> findFilmShowsByMovieTitle(String movieTitle) {
-        if (movieTitle == null) {
+        if (Objects.isNull(movieTitle)) {
             throw new AppException("id is null");
         }
-
 
         return filmShowRepository
                 .findAllByMovie_Title(movieTitle)
                 .stream()
-                .flatMap(Collection::stream)
                 .map(GetMappers::fromFilmShowToGetFilmShowDto)
                 .collect(Collectors.toList());
     }
 
-    public Long add(Long cinemaId, CreateFilmShowDto createFilmShowDto) {
-        if (createFilmShowDto == null) {
+    public Long add(CreateFilmShowDto createFilmShowDto) {
+        if (Objects.isNull(createFilmShowDto)) {
             throw new AppException("Film show is null");
         }
-        if (cinemaRepository.findById(cinemaId).isPresent() &&
-                filmShowRepository.findByStartTimeAndCinemaHall_Id(createFilmShowDto.getStartTime(), createFilmShowDto.getCinemaHall().getId()).isPresent()) {
-            throw new AppException("Film show in this cinema with time " + createFilmShowDto.getStartTime() + " and cinema hall exist");
-        }
 
-        Movie movie = movieRepository.findByTitleAndDirector(createFilmShowDto.getMovie().getTitle(), createFilmShowDto.getMovie().getTitle())
+        Cinema cinema = cinemaRepository.findById(createFilmShowDto.getCinemaId())
+                .orElseThrow(() -> new AppException("Cinema with given id doesn't exist"));
+
+        CinemaHall cinemaHall = cinemaHallRepository.findById(createFilmShowDto.getCinemaHallId())
+                .orElseThrow(() -> new AppException("Cinema has not cinema hall with given id"));
+
+        Movie movie = movieRepository.findById(createFilmShowDto.getMovieId())
                 .orElseThrow(() -> new AppException("Cannot find movie with given title and director"));
 
         FilmShow filmShow = CreateMappers.fromCreateFilmShowDtoToFilmShow(createFilmShowDto);
+        filmShow.getRepertoire().setCinema(cinema);
         filmShow.setMovie(movie);
+        filmShow.setCinemaHall(cinemaHall);
         filmShowRepository.save(filmShow);
         return filmShow.getId();
     }
 
     public Long edit(Long id, CreateFilmShowDto createFilmShowDto) {
-        if (id == null) {
+        if (Objects.isNull(id)) {
             throw new AppException("id is null");
         }
-        if (createFilmShowDto == null) {
+        if (Objects.isNull(createFilmShowDto)) {
             throw new AppException("Film show is null");
         }
+        Movie movie = movieRepository.findById(createFilmShowDto.getMovieId())
+                .orElse(null);
+
+        CinemaHall cinemaHall = cinemaHallRepository.findById(createFilmShowDto.getCinemaHallId())
+                .orElse(null);
 
         FilmShow filmShow = filmShowRepository
                 .findById(id)
                 .orElseThrow(() -> new AppException("Film show with id " + id + " doesn't exist"));
 
-        filmShow.setCinemaHall(createFilmShowDto.getCinemaHall() != null ? CreateMappers.fromCreateCinemaHallDtoToCinemaHall(createFilmShowDto.getCinemaHall()) : filmShow.getCinemaHall());
         filmShow.setStartTime(createFilmShowDto.getStartTime() != null ? createFilmShowDto.getStartTime() : filmShow.getStartTime());
+        filmShow.setMovie(movie != null ? movie : filmShow.getMovie());
+        filmShow.setCinemaHall(cinemaHall != null ? cinemaHall : filmShow.getCinemaHall());
 
         filmShowRepository.save(filmShow);
         return filmShow.getId();
     }
 
     public Long deleteById(Long id) {
-        if (id == null) {
+        if (Objects.isNull(id)) {
             throw new AppException("id is null");
         }
         FilmShow filmShow = filmShowRepository

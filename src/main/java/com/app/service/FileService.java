@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 @Transactional
 public interface FileService {
 
-    public static void saveToFile(String fileName, String message) {
+    static void saveToFile(String fileName, String message) {
         try {
             FileWriter writer = new FileWriter(fileName);
             PrintWriter printWriter = new PrintWriter(writer);

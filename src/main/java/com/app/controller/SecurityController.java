@@ -2,7 +2,10 @@ package com.app.controller;
 
 import com.app.dto.createDto.CreateUserDto;
 import com.app.dto.data.Info;
+import com.app.dto.data.RefreshTokenDto;
+import com.app.dto.data.Tokens;
 import com.app.dto.getDto.GetUserDto;
+import com.app.security.token.JwtTokenManager;
 import com.app.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,7 @@ import java.util.Map;
 public class SecurityController {
 
     private final SecurityService securityService;
+    private final JwtTokenManager jwtTokenManager;
 
     @GetMapping
     public ResponseEntity<Info<List<GetUserDto>>> findAllUsers() {
@@ -34,7 +38,15 @@ public class SecurityController {
                 .build());
     }
 
-    @PostMapping
+    @PostMapping("/refreshTokens")
+    public ResponseEntity<Info<Tokens>> refreshToken(@RequestBody RefreshTokenDto refreshTokenDto) {
+        return new ResponseEntity<>(Info.<Tokens>builder()
+                .data(jwtTokenManager.generateTokens(refreshTokenDto))
+                .build(),
+                HttpStatus.CREATED);
+    }
+
+    @PostMapping("/register")
     public ResponseEntity<Info<Long>> register(@RequestBody CreateUserDto createUserDto) {
         return new ResponseEntity<>(Info.<Long>builder()
                 .data(securityService.register(createUserDto))
@@ -67,7 +79,6 @@ public class SecurityController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Info<Long>> deleteById(@PathVariable Long id) {
         return new ResponseEntity<>(Info.<Long>builder()
                 .data(securityService.remove(id))

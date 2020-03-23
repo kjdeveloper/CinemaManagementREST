@@ -19,36 +19,36 @@ public class FilmShowController {
 
     private final FilmShowService filmShowService;
 
-    @GetMapping
+    @GetMapping("/findAll")
     public ResponseEntity<Info<List<GetFilmShowDto>>> getAll() {
         return ResponseEntity.ok(Info.<List<GetFilmShowDto>>builder()
                 .data(filmShowService.findAll())
                 .build());
     }
 
-    @GetMapping("/{cinemaId}")
+    @GetMapping("/byCinemaId/{cinemaId}")
     public ResponseEntity<Info<List<GetFilmShowDto>>> getAllInParticularCinema(@PathVariable Long cinemaId) {
         return ResponseEntity.ok(Info.<List<GetFilmShowDto>>builder()
                 .data(filmShowService.findAllFilmShowsInParticularCinema(cinemaId))
                 .build());
     }
 
-    @GetMapping("/{title}")
+    @GetMapping("/byTitle/{title}")
     public ResponseEntity<Info<List<GetFilmShowDto>>> getAllByMovieTitle(@PathVariable String title) {
         return ResponseEntity.ok(Info.<List<GetFilmShowDto>>builder()
                 .data(filmShowService.findFilmShowsByMovieTitle(title))
                 .build());
     }
-
-    @PostMapping("/{cinemaId}")
-    public ResponseEntity<Info<Long>> add(@PathVariable Long cinemaId, @RequestBody CreateFilmShowDto filmShowDto) {
+    //dodac do postmana
+    @PostMapping("/addOne")
+    public ResponseEntity<Info<Long>> add(@RequestBody CreateFilmShowDto filmShowDto) {
         return new ResponseEntity<>(Info.<Long>builder()
-                .data(filmShowService.add(cinemaId, filmShowDto))
+                .data(filmShowService.add(filmShowDto))
                 .build(),
                 HttpStatus.CREATED);
     }
-
-    @PutMapping("{filmShowId}")
+    //dodac do postmana
+    @PutMapping("/{filmShowId}")
     public ResponseEntity<Info<Long>> update(@PathVariable Long filmShowId, @RequestBody CreateFilmShowDto filmShowDto) {
         return new ResponseEntity<>(Info.<Long>builder()
                 .data(filmShowService.edit(filmShowId, filmShowDto))

@@ -5,10 +5,10 @@ import com.app.dto.getDto.GetHistoryTicket;
 import com.app.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -25,21 +25,29 @@ public class TicketController {
                 .build());
     }
 
-    @GetMapping("/history/{from}/{to}/{userId}/{sendMail}/{getFile}")
-    public ResponseEntity<Info<List<GetHistoryTicket>>> getHistoryTicketsByPrice(@PathVariable Long userId,
-                                                                                 @PathVariable BigDecimal from,
-                                                                                 @PathVariable BigDecimal to,
-                                                                                 @PathVariable(name = "sendMail", required = false) boolean sendMail,
-                                                                                 @PathVariable(name = "getFile", required = false) boolean getFile) {
-
-        boolean sendMailFinal = StringUtils.isEmpty(sendMail) ? false : sendMail;
-        boolean getFileFinal = StringUtils.isEmpty(getFile) ? false : getFile;
+    @PostMapping("/history")
+    public ResponseEntity<Info<List<GetHistoryTicket>>> getHistoryTicketsByPrice(@RequestBody Long userId,
+                                                                                 @RequestBody BigDecimal from,
+                                                                                 @RequestBody BigDecimal to,
+                                                                                 @RequestBody boolean sendMail,
+                                                                                 @RequestBody boolean getFile) {
 
         return ResponseEntity.ok(Info.<List<GetHistoryTicket>>builder()
-                .data(ticketService.getHistoryOfTicketsByPrice(from, to, userId, sendMailFinal, getFileFinal))
+                .data(ticketService.getHistoryOfTicketsByPrice(from, to, userId, sendMail, getFile))
                 .build());
     }
 
+    @GetMapping("/historyByDate")
+    public ResponseEntity<Info<List<GetHistoryTicket>>> getHistoryTicketsByDate(@RequestBody Long userId,
+                                                                                @RequestBody LocalDate from,
+                                                                                @RequestBody LocalDate to,
+                                                                                @RequestBody boolean sendMail,
+                                                                                @RequestBody boolean getFile) {
+
+        return ResponseEntity.ok(Info.<List<GetHistoryTicket>>builder()
+                .data(ticketService.getHistoryOfTicketsByDate(from, to, userId, sendMail, getFile))
+                .build());
+    }
 
 
 }

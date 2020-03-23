@@ -24,6 +24,7 @@ public interface GetMappers {
         return cinema == null ? null : GetCinemaDto.builder()
                 .id(cinema.getId())
                 .city(cinema.getCity())
+                .name(cinema.getName())
                 .repertoires(new HashSet<>())
                 .build();
     }
@@ -31,6 +32,8 @@ public interface GetMappers {
     static GetCinemaHallDto fromCinemaHallToGetCinemaHallDto(CinemaHall cinemaHall) {
         return cinemaHall == null ? null : GetCinemaHallDto.builder()
                 .id(cinemaHall.getId())
+                .name(cinemaHall.getName())
+                .cinemaHallType(cinemaHall.getType())
                 .places(new HashSet<>())
                 .getFilmShowDto(cinemaHall.getFilmShow() == null ? null : fromFilmShowToGetFilmShowDto(cinemaHall.getFilmShow()))
                 .build();
@@ -71,7 +74,5 @@ public interface GetMappers {
                 .age(user.getAge())
                 .email(user.getEmail())
                 .build();
-
     }
-
 }

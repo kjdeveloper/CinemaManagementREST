@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,13 +22,13 @@ public class RepertoireController {
     private final RepertoireService repertoireService;
 
     @GetMapping("/byDateAndCinema")
-    public ResponseEntity<Info<List<GetRepertoireDto>>> getAllByDateAndCity(@RequestBody LocalDate date, @RequestBody City city) {
+    public ResponseEntity<Info<List<GetRepertoireDto>>> getAllByDateAndCity(@RequestBody Map<String, String> params) {
         return ResponseEntity.ok(Info.<List<GetRepertoireDto>>builder()
-                .data(repertoireService.findByDateAndCinemaCity(date, city))
+                .data(repertoireService.findByDateAndCinemaCity(params))
                 .build());
     }
 
-    @GetMapping
+    @GetMapping("/findAll")
     public ResponseEntity<Info<List<GetRepertoireDto>>> getAll() {
         return ResponseEntity.ok(Info.<List<GetRepertoireDto>>builder()
                 .data(repertoireService.findAll())
@@ -49,7 +50,7 @@ public class RepertoireController {
                 .build(),
                 HttpStatus.OK);
     }
-
+        //poprawic
     @DeleteMapping("/{id}")
     public ResponseEntity<Info<Long>> deleteById(@PathVariable Long id) {
         return new ResponseEntity<>(Info.<Long>builder()
@@ -57,8 +58,8 @@ public class RepertoireController {
                 .build(),
                 HttpStatus.OK);
     }
-
-    @DeleteMapping
+    //poprawic
+    @DeleteMapping("/all")
     public ResponseEntity<Info<Long>> deleteAll() {
         return new ResponseEntity<>(Info.<Long>builder()
                 .data(repertoireService.deleteAll())
