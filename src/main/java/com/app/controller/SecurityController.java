@@ -62,15 +62,7 @@ public class SecurityController {
                 HttpStatus.OK);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Info<Long>> updateParams(@PathVariable Long id, @RequestBody CreateUserDto userDto) {
-        return new ResponseEntity<>(Info.<Long>builder()
-                .data(securityService.update(id, userDto))
-                .build(),
-                HttpStatus.OK);
-    }
-
-    @PatchMapping
+    @PatchMapping("{id}")
     public ResponseEntity<Info<Long>> updateParams(@PathVariable Long id, @RequestBody Map<String, String> params) {
         return new ResponseEntity<>(Info.<Long>builder()
                 .data(securityService.changeParam(id, params))
@@ -82,6 +74,14 @@ public class SecurityController {
     public ResponseEntity<Info<Long>> deleteById(@PathVariable Long id) {
         return new ResponseEntity<>(Info.<Long>builder()
                 .data(securityService.remove(id))
+                .build(),
+                HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteAll")
+    public ResponseEntity<Info<Long>> deleteAll() {
+        return new ResponseEntity<>(Info.<Long>builder()
+                .data(securityService.removeAll())
                 .build(),
                 HttpStatus.OK);
     }

@@ -3,14 +3,8 @@ package com.app.service;
 import com.app.dto.createDto.CreateFilmShowDto;
 import com.app.dto.getDto.GetFilmShowDto;
 import com.app.exception.AppException;
-import com.app.model.Cinema;
-import com.app.model.CinemaHall;
-import com.app.model.FilmShow;
-import com.app.model.Movie;
-import com.app.repository.CinemaHallRepository;
-import com.app.repository.CinemaRepository;
-import com.app.repository.FilmShowRepository;
-import com.app.repository.MovieRepository;
+import com.app.model.*;
+import com.app.repository.*;
 import com.app.service.mappers.CreateMappers;
 import com.app.service.mappers.GetMappers;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +25,7 @@ public class FilmShowService {
     private final MovieRepository movieRepository;
     private final CinemaRepository cinemaRepository;
     private final CinemaHallRepository cinemaHallRepository;
+    private final RepertoireRepository repertoireRepository;
 
     public List<GetFilmShowDto> findAll() {
         return filmShowRepository.findAll()
@@ -70,8 +65,8 @@ public class FilmShowService {
             throw new AppException("Film show is null");
         }
 
-        Cinema cinema = cinemaRepository.findById(createFilmShowDto.getCinemaId())
-                .orElseThrow(() -> new AppException("Cinema with given id doesn't exist"));
+        Repertoire repertoire = repertoireRepository.findById(createFilmShowDto.getRepertoireId())
+                .orElseThrow(() -> new AppException("Repertoire with given id doesn't exist"));
 
         CinemaHall cinemaHall = cinemaHallRepository.findById(createFilmShowDto.getCinemaHallId())
                 .orElseThrow(() -> new AppException("Cinema has not cinema hall with given id"));
@@ -80,9 +75,11 @@ public class FilmShowService {
                 .orElseThrow(() -> new AppException("Cannot find movie with given title and director"));
 
         FilmShow filmShow = CreateMappers.fromCreateFilmShowDtoToFilmShow(createFilmShowDto);
-        filmShow.getRepertoire().setCinema(cinema);
+
+        filmShow.setRepertoire(repertoire);
         filmShow.setMovie(movie);
         filmShow.setCinemaHall(cinemaHall);
+
         filmShowRepository.save(filmShow);
         return filmShow.getId();
     }

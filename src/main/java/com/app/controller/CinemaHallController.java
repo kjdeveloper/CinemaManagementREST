@@ -47,7 +47,6 @@ public class CinemaHallController {
                 HttpStatus.CREATED);
     }
 
-    //dodac do postman wszystko w dol!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     @PutMapping("/update/{id}")
     public ResponseEntity<Info<Long>> update(@PathVariable Long id, @RequestBody CreateCinemaHallDto cinemaHallDto){
         return new ResponseEntity<>(Info.<Long>builder()

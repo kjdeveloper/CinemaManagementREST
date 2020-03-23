@@ -41,7 +41,6 @@ public class CinemaController {
                 HttpStatus.OK);
     }
 
-
     @PutMapping("/{id}")
     public ResponseEntity<Info<Long>> update(@PathVariable Long id, @RequestBody CreateCinemaDto cinemaDto) {
         return new ResponseEntity<>(Info.<Long>builder()

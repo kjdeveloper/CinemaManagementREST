@@ -39,15 +39,15 @@ public class FilmShowController {
                 .data(filmShowService.findFilmShowsByMovieTitle(title))
                 .build());
     }
-    //dodac do postmana
-    @PostMapping("/addOne")
+
+    @PostMapping()
     public ResponseEntity<Info<Long>> add(@RequestBody CreateFilmShowDto filmShowDto) {
         return new ResponseEntity<>(Info.<Long>builder()
                 .data(filmShowService.add(filmShowDto))
                 .build(),
                 HttpStatus.CREATED);
     }
-    //dodac do postmana
+
     @PutMapping("/{filmShowId}")
     public ResponseEntity<Info<Long>> update(@PathVariable Long filmShowId, @RequestBody CreateFilmShowDto filmShowDto) {
         return new ResponseEntity<>(Info.<Long>builder()

@@ -38,7 +38,7 @@ public class SecurityService {
     }
 
     public GetUserDto findUserById(Long id) {
-        if (Objects.isNull(id)){
+        if (Objects.isNull(id)) {
             throw new AppException("id is null");
         }
         return userRepository.
@@ -98,10 +98,10 @@ public class SecurityService {
 
         user.setName(userDto.getName() != null ? userDto.getName() : user.getName());
         user.setSurname(userDto.getSurname() != null ? userDto.getSurname() : user.getSurname());
+        user.setUsername(userDto.getUsername() != null ? userDto.getUsername() : user.getUsername());
         user.setAge(userDto.getAge() != null ? userDto.getAge() : user.getAge());
         user.setEmail(userDto.getEmail() != null ? userDto.getEmail() : user.getEmail());
         user.setPassword(userDto.getPassword() != null ? userDto.getPassword() : user.getPassword());
-        user.setRoles(roles);
 
         return userRepository.save(user).getId();
     }
@@ -146,5 +146,11 @@ public class SecurityService {
         userRepository.delete(user);
 
         return user.getId();
+    }
+
+    public Long removeAll() {
+        long rows = userRepository.count();
+        userRepository.deleteAll();
+        return rows;
     }
 }
