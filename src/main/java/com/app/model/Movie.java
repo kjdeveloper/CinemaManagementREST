@@ -22,16 +22,18 @@ public class Movie {
     private String title;
     private String description;
     private String director;
-    private int duration;
+    private Integer duration;
 
     @Enumerated(EnumType.STRING)
     private Genre genre;
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "movie")
+    @OneToMany(mappedBy = "movie")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<FilmShow> filmShows = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "user_favourite_movies", joinColumns = @JoinColumn(name = "movie_id"),
-    inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users = new HashSet<>();
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }

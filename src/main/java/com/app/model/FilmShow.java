@@ -20,9 +20,10 @@ public class FilmShow {
     private Long id;
 
     private LocalDateTime startTime;
-    private Integer cinemaHall;
-    private Integer duration;
     private Integer ticketsAvailable;
+
+    @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "filmShow")
+    private CinemaHall cinemaHall;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "repertoire_id")
@@ -32,9 +33,7 @@ public class FilmShow {
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "filmShow_tickets", joinColumns = @JoinColumn(name = "filmShow_id"),
-            inverseJoinColumns = @JoinColumn(name = "ticket_id"))
+    @OneToMany(mappedBy = "filmShow", fetch = FetchType.EAGER)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Ticket> tickets = new HashSet<>();

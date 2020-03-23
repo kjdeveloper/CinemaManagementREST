@@ -15,6 +15,6 @@ import java.util.Set;
 public class CreateRepertoireDto {
 
     private LocalDate date;
-    private CreateCinemaDto cinema;
+    private Long cinemaId;
     private Set<CreateFilmShowDto> filmShows;
 }

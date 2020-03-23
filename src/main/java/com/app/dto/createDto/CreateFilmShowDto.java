@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -14,8 +15,8 @@ import java.time.LocalDateTime;
 public class CreateFilmShowDto {
 
     private LocalDateTime startTime;
-    private CreateCinemaHallDto cinemaHall;
-    private CreateMovieDto movie;
+    private Long cinemaId;
+    private Long cinemaHallId;
+    private Long movieId;
     private Integer ticketsAvailable;
-
 }

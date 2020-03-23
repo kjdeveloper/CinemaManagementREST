@@ -1,9 +1,11 @@
 package com.app.model;
 
+import com.app.exception.AppException;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -21,10 +23,11 @@ public class User {
     private String name;
     private String surname;
     private Integer age;
+    private String username;
     private String email;
     private String password;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -32,15 +35,30 @@ public class User {
     @ToString.Exclude
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "user_tickets", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "ticket_id"))
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<Ticket> tickets = new HashSet<>();
+    private Set<Ticket> tickets;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "users")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Movie> favouriteMovies = new HashSet<>();
+
+    public Long addFavouriteMovie(Movie movie) {
+        if (movie == null) {
+            throw new AppException("Movie is null");
+        }
+        favouriteMovies.add(movie);
+        return movie.getId();
+    }
+
+    public void deleteFavouriteMovie(Movie movie) {
+        if (movie == null) {
+            throw new AppException("Movie is null");
+        }
+        favouriteMovies.remove(movie);
+    }
+
+
 }

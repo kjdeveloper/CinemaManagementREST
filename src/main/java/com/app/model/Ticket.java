@@ -1,13 +1,14 @@
 package com.app.model;
 
+import com.app.model.enums.TicketType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -21,13 +22,21 @@ public class Ticket {
     @GeneratedValue
     private Long id;
 
-    private Integer quantity;
-    private Boolean reservation;
+    private BigDecimal price;
 
-    @ManyToMany(mappedBy = "tickets")
-    private Set<FilmShow> filmShows = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    private TicketType ticketType;
 
-    @ManyToMany(mappedBy = "tickets")
-    private Set<User> users = new HashSet<>();
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "filmShow_id")
+    private FilmShow filmShow;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "cinema_id")
+    private Cinema cinema;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id", unique = true)
+    private User user;
 }
 

@@ -15,7 +15,7 @@ public class CreateMovieDto {
     private String title;
     private String description;
     private String director;
-    private int duration;
+    private Integer duration;
     private Genre genre;
 
 }

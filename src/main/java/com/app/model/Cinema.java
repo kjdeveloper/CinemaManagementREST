@@ -1,10 +1,7 @@
 package com.app.model;
 
 import com.app.model.enums.City;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -21,12 +18,22 @@ public class Cinema {
     @Id
     @GeneratedValue
     private Long id;
+
+    @OneToMany(mappedBy = "cinema")
+    private Set<Ticket> ticketSold = new HashSet<>();
+
     private String name;
 
     @Enumerated(EnumType.STRING)
     private City city;
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "cinema")
+    @OneToMany(mappedBy = "cinema")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Repertoire> repertoires = new HashSet<>();
 
+    @OneToMany(mappedBy = "cinema")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<CinemaHall> cinemaHalls = new HashSet<>();
 }

@@ -1,9 +1,11 @@
 package com.app.dto.createDto;
 
+import com.app.model.enums.CinemaHallType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 @Data
 @AllArgsConstructor
@@ -12,8 +14,8 @@ import lombok.NoArgsConstructor;
 public class CreateCinemaHallDto {
 
     private Long id;
-    private Integer row;
-    private Integer place;
+    private String name;
+    private CinemaHallType cinemaHallType;
     private CreateFilmShowDto createFilmShowDto;
 
 }

@@ -20,7 +20,7 @@ public class Repertoire {
     private Long id;
     private LocalDate date;
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "repertoire")
+    @OneToMany(mappedBy = "repertoire")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<FilmShow> filmShows = new HashSet<>();
