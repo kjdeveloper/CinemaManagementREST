@@ -1,23 +1,24 @@
 package com.app.model;
 
+import com.app.model.base.BaseEntity;
 import com.app.model.enums.CinemaHallType;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Entity
-@Table(name = "cinemaHalls")
-public class CinemaHall {
+@Getter
+@Setter
+@SuperBuilder
 
-    @Id
-    @GeneratedValue
-    private Long id;
+@Entity
+@Table(name = "cinema_halls")
+public class CinemaHall extends BaseEntity {
 
     private String name;
 
@@ -28,12 +29,9 @@ public class CinemaHall {
     @JoinColumn(name = "cinema_id")
     private Cinema cinema;
 
-/*    @OneToMany(mappedBy = "cinemaHall", fetch = FetchType.EAGER)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Set<Place> places = new HashSet<>();*/
+    @OneToMany(mappedBy = "cinemaHall")
+    private Set<Place> places;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "filmShow_id")
+    @OneToOne(mappedBy = "cinemaHall")
     private FilmShow filmShow;
 }

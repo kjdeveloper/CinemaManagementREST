@@ -1,32 +1,29 @@
-/*
 package com.app.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.app.model.base.BaseEntity;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.Objects;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Getter
+@Setter
+@SuperBuilder
+
 @Entity
 @Table(name = "places")
-public class Place {
-
-    @Id
-    @GeneratedValue
-    private Long id;
+public class Place extends BaseEntity {
 
     private Boolean available;
+
+    @Column(name = "row_num")
     private Integer row;
     private Integer number;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "cinemaHall_id")
+    @JoinColumn(name = "cinema_hall_id")
     private CinemaHall cinemaHall;
 }
-*/
+

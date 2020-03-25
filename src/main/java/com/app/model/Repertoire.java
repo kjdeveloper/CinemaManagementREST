@@ -1,29 +1,28 @@
 package com.app.model;
 
+import com.app.model.base.BaseEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Getter
+@Setter
+@SuperBuilder
+
 @Entity
 @Table(name = "repertoires")
-public class Repertoire {
+public class Repertoire extends BaseEntity {
 
-    @Id
-    @GeneratedValue
-    private Long id;
     private LocalDate date;
 
     @OneToMany(mappedBy = "repertoire")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Set<FilmShow> filmShows = new HashSet<>();
+    private Set<FilmShow> filmShows;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cinema_id")

@@ -1,24 +1,24 @@
 package com.app.model;
 
 import com.app.exception.AppException;
+import com.app.model.base.BaseEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Getter
+@Setter
+@SuperBuilder
+
 @Entity
 @Table(name = "users")
-public class User {
-
-    @Id
-    @GeneratedValue
-    private Long id;
+public class User extends BaseEntity {
 
     private String name;
     private String surname;
@@ -31,19 +31,13 @@ public class User {
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     private Set<Ticket> tickets;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Set<Movie> favouriteMovies = new HashSet<>();
+    private Set<Movie> favouriteMovies;
 
     public Long addFavouriteMovie(Movie movie) {
         if (movie == null) {

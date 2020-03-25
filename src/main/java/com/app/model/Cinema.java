@@ -1,26 +1,24 @@
 package com.app.model;
 
+import com.app.model.base.BaseEntity;
 import com.app.model.enums.City;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Getter
+@Setter
+@SuperBuilder
+
 @Entity
 @Table(name = "cinemas")
-public class Cinema {
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @OneToMany(mappedBy = "cinema")
-    private Set<Ticket> ticketSold = new HashSet<>();
+public class Cinema extends BaseEntity {
 
     private String name;
 
@@ -28,12 +26,11 @@ public class Cinema {
     private City city;
 
     @OneToMany(mappedBy = "cinema")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Set<Repertoire> repertoires = new HashSet<>();
+    private Set<Ticket> tickets;
 
     @OneToMany(mappedBy = "cinema")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Set<CinemaHall> cinemaHalls = new HashSet<>();
+    private Set<Repertoire> repertoires;
+
+    @OneToMany(mappedBy = "cinema")
+    private Set<CinemaHall> cinemaHalls;
 }

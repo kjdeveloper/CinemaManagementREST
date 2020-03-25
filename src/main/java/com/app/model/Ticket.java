@@ -1,26 +1,23 @@
 package com.app.model;
 
+import com.app.model.base.BaseEntity;
 import com.app.model.enums.TicketType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Getter
+@Setter
+@SuperBuilder
+
 @Entity
 @Table(name = "tickets")
-public class Ticket {
-
-    @Id
-    @GeneratedValue
-    private Long id;
+public class Ticket extends BaseEntity {
 
     private BigDecimal price;
 

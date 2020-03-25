@@ -1,28 +1,30 @@
 package com.app.model;
 
+import com.app.model.base.BaseEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Entity
-@Table(name = "filmShows")
-public class FilmShow {
+@Getter
+@Setter
+@SuperBuilder
 
-    @Id
-    @GeneratedValue
-    private Long id;
+@Entity
+@Table(name = "film_shows")
+public class FilmShow extends BaseEntity {
 
     private LocalDateTime startTime;
     private Integer ticketsAvailable;
 
-    @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "filmShow")
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "cinemaHall_id")
     private CinemaHall cinemaHall;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
@@ -34,8 +36,5 @@ public class FilmShow {
     private Movie movie;
 
     @OneToMany(mappedBy = "filmShow", fetch = FetchType.EAGER)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Set<Ticket> tickets = new HashSet<>();
-
+    private Set<Ticket> tickets;
 }
