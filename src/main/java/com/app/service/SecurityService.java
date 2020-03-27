@@ -102,7 +102,7 @@ public class SecurityService {
         user.setAge(userDto.getAge() != null ? userDto.getAge() : user.getAge());
         user.setEmail(userDto.getEmail() != null ? userDto.getEmail() : user.getEmail());
         user.setPassword(userDto.getPassword() != null ? userDto.getPassword() : user.getPassword());
-
+        user.setRoles(roles);
         return userRepository.save(user).getId();
     }
 

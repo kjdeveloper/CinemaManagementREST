@@ -6,9 +6,9 @@ import com.app.model.enums.City;
 import com.app.model.enums.TicketType;
 import com.app.service.StatisticsService;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,46 +24,44 @@ public class StatsController {
     private final StatisticsService statisticsService;
 
     @GetMapping("/cityWithHighestNumOfWatcher")
-    public ResponseEntity<Info<Map<City, Long>>> getMapOfWatchersInTheCity() {
+    public ResponseEntity<Info<Map<City, Long>>> getMapOfWatchersInTheCity(@RequestBody Map<String, Boolean> mapOfChoices) {
         return ResponseEntity.ok(Info.<Map<City, Long>>builder()
-                .data(statisticsService.getCityWithHighestNumberOfWatcher())
+                .data(statisticsService.getCityWithHighestNumberOfWatcher(mapOfChoices))
                 .build());
     }
 
     @GetMapping("/theMostPopMovInCity")
-    public ResponseEntity<Info<Map<City, GetMovieDto>>> getMostPopularMovieInCity() {
+    public ResponseEntity<Info<Map<City, GetMovieDto>>> getMostPopularMovieInCity(@RequestBody Map<String, Boolean> mapOfChoices) {
         return ResponseEntity.ok(Info.<Map<City, GetMovieDto>>builder()
-                .data(statisticsService.getTheMostPopularMovieInCity())
+                .data(statisticsService.getTheMostPopularMovieInCity(mapOfChoices))
                 .build());
     }
 
     @GetMapping("/avePriceOfTickets")
-    public ResponseEntity<Info<Map<City, BigDecimal>>> getAveragePriceOfTickets() {
+    public ResponseEntity<Info<Map<City, BigDecimal>>> getAveragePriceOfTickets(@RequestBody Map<String, Boolean> mapOfChoices) {
         return ResponseEntity.ok(Info.<Map<City, BigDecimal>>builder()
-                .data(statisticsService.averagePriceOfTicketsInCity())
+                .data(statisticsService.averagePriceOfTicketsInCity(mapOfChoices))
                 .build());
     }
 
     @GetMapping("/profitForCity")
-    public ResponseEntity<Info<Map<City, BigDecimal>>> getProfitForCity() {
+    public ResponseEntity<Info<Map<City, BigDecimal>>> getProfitForCity(@RequestBody Map<String, Boolean> mapOfChoices) {
         return ResponseEntity.ok(Info.<Map<City, BigDecimal>>builder()
-                .data(statisticsService.profitForEveryCity())
+                .data(statisticsService.profitForEveryCity(mapOfChoices))
                 .build());
     }
 
     @GetMapping("/mostCommonTicketType")
-    public ResponseEntity<Info<Map<TicketType, Long>>> getMostCommonTicketType() {
+    public ResponseEntity<Info<Map<TicketType, Long>>> getMostCommonTicketType(@RequestBody Map<String, Boolean> mapOfChoices) {
         return ResponseEntity.ok(Info.<Map<TicketType, Long>>builder()
-                .data(statisticsService.mostCommonTicketType())
+                .data(statisticsService.mostCommonTicketType(mapOfChoices))
                 .build());
     }
 
     @GetMapping("/dayWithTheMostVisits")
-    public ResponseEntity<Info<Map<DayOfWeek, Long>>> getDayWithTheMostVisits() {
+    public ResponseEntity<Info<Map<DayOfWeek, Long>>> getDayWithTheMostVisits(@RequestBody Map<String, Boolean> mapOfChoices) {
         return ResponseEntity.ok(Info.<Map<DayOfWeek, Long>>builder()
-                .data(statisticsService.dayWithTheMostVisits())
+                .data(statisticsService.dayWithTheMostVisits(mapOfChoices))
                 .build());
     }
-
-
 }

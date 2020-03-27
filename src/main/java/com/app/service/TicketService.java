@@ -150,7 +150,7 @@ public class TicketService {
         if (getFile) {
             Scanner sc = new Scanner(System.in);
             String fileName = sc.nextLine();
-            FileService.saveToFile(fileName, tickets.toString());
+            FileService.saveToFile(fileName, tickets);
         }
         return tickets;
     }
@@ -199,7 +199,7 @@ public class TicketService {
         if (getFile) {
             Scanner sc = new Scanner(System.in);
             String fileName = sc.nextLine();
-            FileService.saveToFile(fileName, tickets.toString());
+            FileService.saveToFile(fileName, tickets);
         }
 
         return tickets;

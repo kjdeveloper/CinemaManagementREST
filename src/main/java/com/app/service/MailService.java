@@ -6,22 +6,36 @@ import com.app.repository.UserRepository;
 import com.app.service.mappers.GetMappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.mail.javamail.JavaMailSender;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class MailService {
 
     private final UserRepository userRepository;
 
     private final JavaMailSender javaMailSender;
+
+    public void sendEmail(String subject, Map text) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Please, give me your email address:");
+        String recipientAddress = sc.nextLine();
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(recipientAddress);
+        simpleMailMessage.setSubject(subject);
+        simpleMailMessage.setText(text.toString());
+        javaMailSender.send(simpleMailMessage);
+    }
 
     public Long sendInformationAboutNewEvent(String title, String message) {
         if (Objects.isNull(title)) {

@@ -1,7 +1,10 @@
 package com.app.service;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,13 +12,14 @@ import java.io.PrintWriter;
 @Transactional
 public interface FileService {
 
-    static void saveToFile(String fileName, String message) {
-        try {
-            FileWriter writer = new FileWriter(fileName);
-            PrintWriter printWriter = new PrintWriter(writer);
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-            printWriter.println(message);
-            printWriter.close();
+    static void saveToFile(String filename, Object map) {
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+            writer.write(gson.toJson(map));
+
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,6 +1,7 @@
 package com.app.service;
 
 import com.app.dto.createDto.CreateMovieDto;
+import com.app.dto.getDto.GetFilmShowDto;
 import com.app.dto.getDto.GetMovieDto;
 import com.app.exception.AppException;
 import com.app.model.FilmShow;
@@ -18,9 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +32,8 @@ public class MovieService {
     private final UserRepository userRepository;
     private final FilmShowRepository filmShowRepository;
 
+    private final FilmShowService filmShowService;
+
     public List<GetMovieDto> findAll() {
         return movieRepository.findAll()
                 .stream()
@@ -42,20 +43,26 @@ public class MovieService {
 
     public GetMovieDto findById(Long id) {
 
-        if (Objects.isNull(id)){
+        if (Objects.isNull(id)) {
             throw new AppException("Id is null");
         }
 
-        return movieRepository.findById(id)
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new AppException("Movie with given id doesn't exist"));
+
+        Set<GetFilmShowDto> filmShows = new HashSet<>(filmShowRepository.findAllByMovie_Id(id))
                 .stream()
-                .map(GetMappers::fromMovieToGetMovieDto)
-                .findFirst()
-                .orElseThrow(() -> new AppException("Movie with id " + id + " doesn't exist"));
+                .map(GetMappers::fromFilmShowToGetFilmShowDto)
+                .collect(Collectors.toSet());
+        
+        GetMovieDto getMovieDto = GetMappers.fromMovieToGetMovieDto(movie);
+        getMovieDto.setFilmShows(filmShows);
+        return getMovieDto;
     }
 
     public List<GetMovieDto> findByTitle(String title) {
 
-        if (Objects.isNull(title)){
+        if (Objects.isNull(title)) {
             throw new AppException("Title is null");
         }
 
@@ -68,7 +75,7 @@ public class MovieService {
 
     public List<GetMovieDto> findByGenre(Genre genre) {
 
-        if (Objects.isNull(genre)){
+        if (Objects.isNull(genre)) {
             throw new AppException("Genre is null");
         }
 
@@ -80,7 +87,7 @@ public class MovieService {
     }
 
     public List<GetMovieDto> findByDateBetweenGiven(Map<String, LocalDate> dates) {
-        if (Objects.isNull(dates)){
+        if (Objects.isNull(dates)) {
             throw new AppException("Dates is null");
         }
 
@@ -126,8 +133,8 @@ public class MovieService {
         movie.setTitle(createMovieDto.getTitle() != null ? createMovieDto.getTitle() : movie.getTitle());
         movie.setDirector(createMovieDto.getDirector() != null ? createMovieDto.getDirector() : movie.getDirector());
         movie.setDuration(createMovieDto.getDuration() != null ? createMovieDto.getDuration() : movie.getDuration());
-        movie.setGenre(createMovieDto.getGenre()!= null ? createMovieDto.getGenre() : movie.getGenre());
-        movie.setDescription(createMovieDto.getDescription()!= null ? createMovieDto.getDescription() : movie.getDescription());
+        movie.setGenre(createMovieDto.getGenre() != null ? createMovieDto.getGenre() : movie.getGenre());
+        movie.setDescription(createMovieDto.getDescription() != null ? createMovieDto.getDescription() : movie.getDescription());
 
         movieRepository.save(movie);
         return movie.getId();

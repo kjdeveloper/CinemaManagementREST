@@ -7,14 +7,10 @@ import com.app.model.enums.City;
 import com.app.model.enums.TicketType;
 import com.app.repository.TicketRepository;
 import com.app.service.mappers.GetMappers;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.util.Comparator;
@@ -28,20 +24,27 @@ import java.util.stream.Collectors;
 public class StatisticsService {
 
     private final TicketRepository ticketRepository;
-    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private final MailService mailService;
 
-    public Map<City, Long> getCityWithHighestNumberOfWatcher() throws IOException {
-        final Map<City, Long> collect = ticketRepository.findAll()
+    public Map<City, Long> getCityWithHighestNumberOfWatcher(Map<String, Boolean> mailFileChoices) {
+        Map<City, Long> collect = ticketRepository.findAll()
                 .stream()
                 .collect(Collectors.groupingBy(ti -> ti.getCinema().getCity(),
                         Collectors.counting()));
 
-        gson.toJson(collect, new FileWriter("citiesWithNumberOfWatcherStatistics"));
+        if (mailFileChoices.get("sendMail")) {
+            mailService.sendEmail("City with highest number of watcher", collect);
+        }
+
+        if (mailFileChoices.get("saveToFile")) {
+            FileService.saveToFile("City with highest number of watcher", collect);
+        }
+
         return collect;
     }
 
-    public Map<City, GetMovieDto> getTheMostPopularMovieInCity() {
-        return ticketRepository.findAll()
+    public Map<City, GetMovieDto> getTheMostPopularMovieInCity(Map<String, Boolean> mailFileChoices) {
+        final LinkedHashMap<City, GetMovieDto> collect = ticketRepository.findAll()
                 .stream()
                 .collect(Collectors.groupingBy(
                         t -> t.getCinema().getCity(),
@@ -58,10 +61,19 @@ public class StatisticsService {
                         (v1, v2) -> v1,
                         LinkedHashMap::new
                 ));
+
+        if (mailFileChoices.get("sendMail")) {
+            mailService.sendEmail("Most popular movie in the city", collect);
+        }
+
+        if (mailFileChoices.get("saveToFile")) {
+            FileService.saveToFile("Most popular movie in the city", collect);
+        }
+        return collect;
     }
 
-    public Map<City, BigDecimal> averagePriceOfTicketsInCity() {
-        return ticketRepository.findAll()
+    public Map<City, BigDecimal> averagePriceOfTicketsInCity(Map<String, Boolean> mailFileChoices) {
+        final LinkedHashMap<City, BigDecimal> collect = ticketRepository.findAll()
                 .stream()
                 .collect(Collectors.groupingBy(t -> t.getCinema().getCity(),
                         Collectors.toList()))
@@ -77,10 +89,19 @@ public class StatisticsService {
                         (v1, v2) -> v1,
                         LinkedHashMap::new
                 ));
+
+        if (mailFileChoices.get("sendMail")) {
+            mailService.sendEmail("Average price of tickets in city", collect);
+        }
+
+        if (mailFileChoices.get("saveToFile")) {
+            FileService.saveToFile("Average price of tickets in city", collect);
+        }
+        return collect;
     }
 
-    public Map<City, BigDecimal> profitForEveryCity() {
-        return ticketRepository.findAll()
+    public Map<City, BigDecimal> profitForEveryCity(Map<String, Boolean> mailFileChoices) {
+        final LinkedHashMap<City, BigDecimal> collect = ticketRepository.findAll()
                 .stream()
                 .collect(Collectors.groupingBy(t -> t.getCinema().getCity(),
                         Collectors.toList()))
@@ -95,20 +116,47 @@ public class StatisticsService {
                         (v1, v2) -> v1,
                         LinkedHashMap::new
                 ));
+
+        if (mailFileChoices.get("sendMail")) {
+            mailService.sendEmail("Profit for each city", collect);
+        }
+
+        if (mailFileChoices.get("saveToFile")) {
+            FileService.saveToFile("Profit for each city", collect);
+        }
+        return collect;
     }
 
-    public Map<TicketType, Long> mostCommonTicketType() {
-        return ticketRepository.findAll()
+    public Map<TicketType, Long> mostCommonTicketType(Map<String, Boolean> mailFileChoices) {
+        final Map<TicketType, Long> collect = ticketRepository.findAll()
                 .stream()
                 .collect(Collectors.groupingBy(Ticket::getTicketType,
                         Collectors.counting()));
+
+        if (mailFileChoices.get("sendMail")) {
+            mailService.sendEmail("Most common ticket type", collect);
+        }
+
+        if (mailFileChoices.get("saveToFile")) {
+            FileService.saveToFile("Most common ticket type", collect);
+        }
+        return collect;
     }
 
-    public Map<DayOfWeek, Long> dayWithTheMostVisits() {
-        return ticketRepository.findAll()
+    public Map<DayOfWeek, Long> dayWithTheMostVisits(Map<String, Boolean> mailFileChoices) {
+        final Map<DayOfWeek, Long> collect = ticketRepository.findAll()
                 .stream()
                 .collect(Collectors.groupingBy(ti -> ti.getFilmShow().getStartTime().getDayOfWeek(),
                         Collectors.counting()));
+
+        if (mailFileChoices.get("sendMail")) {
+            mailService.sendEmail("Day with the most visits", collect);
+        }
+
+        if (mailFileChoices.get("saveToFile")) {
+            FileService.saveToFile("Day with the most visits", collect);
+        }
+        return collect;
     }
 
 

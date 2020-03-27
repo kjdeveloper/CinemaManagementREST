@@ -38,14 +38,16 @@ public class FilmShowService {
         if (Objects.isNull(cinemaId)) {
             throw new AppException("id is null");
         }
+        if (cinemaRepository.findById(cinemaId).isEmpty()) {
+            throw new AppException("Cinema with given id doesn't exist");
+        }
 
-        Cinema cinema = cinemaRepository.findById(cinemaId)
-                .orElseThrow(() -> new AppException("Cannot find cinema with given id"));
-
-        return cinema.getRepertoires()
+        return repertoireRepository.findAll()
                 .stream()
-                .flatMap(f -> f.getFilmShows()
-                        .stream().map(GetMappers::fromFilmShowToGetFilmShowDto)).collect(Collectors.toList());
+                .flatMap(f -> f.getFilmShows().stream())
+                .map(GetMappers::fromFilmShowToGetFilmShowDto)
+                .collect(Collectors.toList());
+
     }
 
     public List<GetFilmShowDto> findFilmShowsByMovieTitle(String movieTitle) {
