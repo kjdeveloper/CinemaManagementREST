@@ -19,4 +19,5 @@ public class GetUserDto {
     private Integer age;
     private String email;
     private Set<String> role;
+    private Long version;
 }

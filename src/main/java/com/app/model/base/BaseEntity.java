@@ -1,8 +1,6 @@
 package com.app.model.base;
 
-import ch.qos.logback.core.joran.spi.NoAutoStart;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;

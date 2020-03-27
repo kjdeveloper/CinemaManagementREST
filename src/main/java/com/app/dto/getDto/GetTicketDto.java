@@ -13,6 +13,7 @@ public class GetTicketDto {
 
     private Long id;
     private GetUserDto user;
+    private Long version;
     private GetFilmShowDto filmShow;
 
 }

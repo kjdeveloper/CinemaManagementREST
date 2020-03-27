@@ -15,7 +15,7 @@ import java.util.Set;
 public class CreateFilmShowDto {
 
     private LocalDateTime startTime;
-    private Long cinemaId;
+    private Long repertoireId;
     private Long cinemaHallId;
     private Long movieId;
     private Integer ticketsAvailable;

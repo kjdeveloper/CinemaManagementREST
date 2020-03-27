@@ -15,5 +15,6 @@ public class GetPlaceDto {
     private boolean available;
     private Integer row;
     private Integer number;
+    private Long version;
 
 }

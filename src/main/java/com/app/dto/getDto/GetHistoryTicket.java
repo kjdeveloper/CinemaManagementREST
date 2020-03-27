@@ -17,6 +17,7 @@ public class GetHistoryTicket {
 
     private FilmShow filmShow;
     private BigDecimal price;
+    private Long version;
     private TicketType ticketType;
 
     @Override

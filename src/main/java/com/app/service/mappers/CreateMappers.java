@@ -30,7 +30,7 @@ public interface CreateMappers {
                 .name(cinemaHallDto.getName())
                 .type(cinemaHallDto.getCinemaHallType())
                 .filmShow(cinemaHallDto.getCreateFilmShowDto() == null ? null : fromCreateFilmShowDtoToFilmShow(cinemaHallDto.getCreateFilmShowDto()))
-                //.places(new HashSet<>())
+                .places(new HashSet<>())
                 .build();
     }
 
@@ -65,11 +65,17 @@ public interface CreateMappers {
                 .build();
     }
 
-    /*static Place fromCreatePlaceDtoToPlace(CreatePlaceDto createPlaceDto){
+    static Place fromCreatePlaceDtoToPlace(CreatePlaceDto createPlaceDto) {
         return createPlaceDto == null ? null : Place.builder()
                 .row(createPlaceDto.getRow())
                 .number(createPlaceDto.getNumber())
                 .build();
-    }*/
+    }
+
+    static Role fromCreateRoleDtoToRole(CreateRoleDto roleDto) {
+        return roleDto == null ? null : Role.builder()
+                .name(roleDto.getName().toUpperCase())
+                .build();
+    }
 
 }

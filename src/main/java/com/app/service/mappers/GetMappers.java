@@ -17,6 +17,7 @@ public interface GetMappers {
                 .genre(movie.getGenre())
                 .usersAddedThisMovieToFavourites(new HashSet<>())
                 .filmShows(new HashSet<>())
+                .version(movie.getVersion())
                 .build();
     }
 
@@ -25,6 +26,7 @@ public interface GetMappers {
                 .id(cinema.getId())
                 .city(cinema.getCity())
                 .name(cinema.getName())
+                .version(cinema.getVersion())
                 .repertoires(new HashSet<>())
                 .build();
     }
@@ -33,9 +35,10 @@ public interface GetMappers {
         return cinemaHall == null ? null : GetCinemaHallDto.builder()
                 .id(cinemaHall.getId())
                 .name(cinemaHall.getName())
+                .version(cinemaHall.getVersion())
                 .cinemaHallType(cinemaHall.getType())
+                .cinemaDto(cinemaHall.getCinema() == null ? null : fromCinemaToGetCinemaDto(cinemaHall.getCinema()))
                 .places(new HashSet<>())
-                .getFilmShowDto(cinemaHall.getFilmShow() == null ? null : fromFilmShowToGetFilmShowDto(cinemaHall.getFilmShow()))
                 .build();
     }
 
@@ -47,6 +50,7 @@ public interface GetMappers {
                 .startTime(filmShow.getStartTime())
                 .movie(filmShow.getMovie() == null ? null : fromMovieToGetMovieDto(filmShow.getMovie()))
                 .tickets(new HashSet<>())
+                .version(filmShow.getVersion())
                 .build();
     }
 
@@ -56,12 +60,14 @@ public interface GetMappers {
                 .date(repertoire.getDate())
                 .cinema(repertoire.getCinema() == null ? null : fromCinemaToGetCinemaDto(repertoire.getCinema()))
                 .filmShows(new HashSet<>())
+                .version(repertoire.getVersion())
                 .build();
     }
 
     static GetTicketDto fromTicketToGetTicketDto(Ticket ticket) {
         return ticket == null ? null : GetTicketDto.builder()
                 .id(ticket.getId())
+                .version(ticket.getVersion())
                 .user(ticket.getUser() == null ? null : fromUserToGetUserDto(ticket.getUser()))
                 .filmShow(ticket.getFilmShow() == null ? null : fromFilmShowToGetFilmShowDto(ticket.getFilmShow()))
                 .build();
@@ -73,6 +79,15 @@ public interface GetMappers {
                 .name(user.getName())
                 .age(user.getAge())
                 .email(user.getEmail())
+                .version(user.getVersion())
+                .build();
+    }
+
+    static GetRoleDto fromRoleToGetRoleDto(Role role){
+        return role == null ? null : GetRoleDto.builder()
+                .id(role.getId())
+                .name(role.getName())
+                .version(role.getVersion())
                 .build();
     }
 }

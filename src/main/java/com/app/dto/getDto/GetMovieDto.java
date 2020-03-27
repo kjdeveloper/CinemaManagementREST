@@ -1,6 +1,5 @@
 package com.app.dto.getDto;
 
-import com.app.model.FilmShow;
 import com.app.model.enums.Genre;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +20,7 @@ public class GetMovieDto {
     private String director;
     private int duration;
     private Genre genre;
+    private Long version;
     private Set<GetUserDto> usersAddedThisMovieToFavourites;
-    private Set<FilmShow> filmShows;
+    private Set<GetFilmShowDto> filmShows;
 }

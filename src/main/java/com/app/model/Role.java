@@ -2,11 +2,15 @@ package com.app.model;
 
 
 import com.app.model.base.BaseEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
-import java.util.HashSet;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -18,6 +22,7 @@ import java.util.Set;
 @Entity
 @Table(name = "roles")
 public class Role extends BaseEntity {
+
 
     private String name;
 

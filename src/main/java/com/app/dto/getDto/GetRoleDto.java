@@ -5,18 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.util.Set;
-
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class GetRepertoireDto {
-
+public class GetRoleDto {
     private Long id;
-    private LocalDate date;
-    private GetCinemaDto cinema;
+    private String name;
     private Long version;
-    private Set<GetFilmShowDto> filmShows;
 }

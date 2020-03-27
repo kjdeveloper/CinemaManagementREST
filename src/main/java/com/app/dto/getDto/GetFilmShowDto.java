@@ -19,6 +19,7 @@ public class GetFilmShowDto {
     private GetCinemaHallDto cinemaHall;
     private Integer ticketsAvailable;
     private GetMovieDto movie;
+    private Long version;
     Set<GetTicketDto> tickets;
 
 }
