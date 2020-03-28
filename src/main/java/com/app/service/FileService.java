@@ -14,11 +14,11 @@ public interface FileService {
 
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    static void saveToFile(String filename, Object map) {
+    static void saveToFile(String filename, Object data) {
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-            writer.write(gson.toJson(map));
+            writer.write(gson.toJson(data));
 
             writer.close();
         } catch (IOException e) {

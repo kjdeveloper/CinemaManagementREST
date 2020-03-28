@@ -4,6 +4,7 @@ import com.app.dto.getDto.*;
 import com.app.model.*;
 
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public interface GetMappers {
 
@@ -38,7 +39,11 @@ public interface GetMappers {
                 .version(cinemaHall.getVersion())
                 .cinemaHallType(cinemaHall.getType())
                 .cinemaDto(cinemaHall.getCinema() == null ? null : fromCinemaToGetCinemaDto(cinemaHall.getCinema()))
-                .places(new HashSet<>())
+                .places(cinemaHall
+                        .getPlaces()
+                        .stream()
+                        .map(GetMappers::fromPlaceToGetPlaceDto)
+                        .collect(Collectors.toSet()))
                 .build();
     }
 
@@ -68,8 +73,11 @@ public interface GetMappers {
         return ticket == null ? null : GetTicketDto.builder()
                 .id(ticket.getId())
                 .version(ticket.getVersion())
+                .price(ticket.getPrice())
+                .place(ticket.getPlace() == null ? null :fromPlaceToGetPlaceDto(ticket.getPlace()))
                 .user(ticket.getUser() == null ? null : fromUserToGetUserDto(ticket.getUser()))
                 .filmShow(ticket.getFilmShow() == null ? null : fromFilmShowToGetFilmShowDto(ticket.getFilmShow()))
+                .cinema(ticket.getCinema() == null ? null : fromCinemaToGetCinemaDto(ticket.getCinema()))
                 .build();
     }
 
@@ -83,11 +91,31 @@ public interface GetMappers {
                 .build();
     }
 
-    static GetRoleDto fromRoleToGetRoleDto(Role role){
+    static GetRoleDto fromRoleToGetRoleDto(Role role) {
         return role == null ? null : GetRoleDto.builder()
                 .id(role.getId())
                 .name(role.getName())
                 .version(role.getVersion())
+                .build();
+    }
+
+    static GetPlaceDto fromPlaceToGetPlaceDto(Place place) {
+        return place == null ? null : GetPlaceDto
+                .builder()
+                .id(place.getId())
+                .version(place.getVersion())
+                .row(place.getRow())
+                .number(place.getNumber())
+                .available(place.getAvailable())
+                .build();
+    }
+
+    static GetHistoryTicket fromTicketToGetHistoryTicket(Ticket ticket){
+        return ticket == null ? null : GetHistoryTicket
+                .builder()
+                .price(ticket.getPrice())
+                .ticketType(ticket.getTicketType())
+                .filmShow(ticket.getFilmShow())
                 .build();
     }
 }

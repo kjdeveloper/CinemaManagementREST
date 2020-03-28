@@ -6,8 +6,10 @@ import com.app.dto.getDto.GetCinemaHallDto;
 import com.app.exception.AppException;
 import com.app.model.Cinema;
 import com.app.model.CinemaHall;
+import com.app.model.Place;
 import com.app.repository.CinemaHallRepository;
 import com.app.repository.CinemaRepository;
+import com.app.repository.PlaceRepository;
 import com.app.service.mappers.CreateMappers;
 import com.app.service.mappers.GetMappers;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,9 @@ public class CinemaHallService {
 
     private final CinemaHallRepository cinemaHallRepository;
     private final CinemaRepository cinemaRepository;
+
+    private final PlaceService placeService;
+
 
     public List<GetCinemaHallDto> findAll() {
         return cinemaHallRepository.findAll()
@@ -60,7 +65,7 @@ public class CinemaHallService {
                 .collect(Collectors.toList());
     }
 
-    //sprawdzic wyjatek
+
     public Long add(Long cinemaId, CreateCinemaHallDto cinemaHallDto) {
         if (Objects.isNull(cinemaHallDto)) {
             throw new AppException("Cinema hall is null");
@@ -73,12 +78,14 @@ public class CinemaHallService {
         }
         Cinema cinema = cinemaRepository.findById(cinemaId)
                 .orElseThrow(() -> new AppException("Cinema with given id doesn't exist"));
-        //Set<Place> places = placeService.createPlacesForHalls(cinemaHallDto.getCinemaHallType().getRow(), cinemaHallDto.getCinemaHallType().getNumber());
 
         CinemaHall cinemaHall = CreateMappers.fromCreateCinemaHallDtoToCinemaHall(cinemaHallDto);
-        //cinemaHall.setPlaces(places);
+        Set<Place> places = placeService.createPlacesForHalls(cinemaHall, cinemaHallDto.getCinemaHallType().getRow(), cinemaHallDto.getCinemaHallType().getNumber());
+
+        cinemaHall.setPlaces(places);
         cinemaHall.setCinema(cinema);
         cinemaHallRepository.save(cinemaHall);
+
         return cinemaHall.getId();
     }
 

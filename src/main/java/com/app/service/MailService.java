@@ -11,10 +11,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,14 +23,14 @@ public class MailService {
 
     private final JavaMailSender javaMailSender;
 
-    public void sendEmail(String subject, Map text) {
+    public void sendEmail(String subject, Object data) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please, give me your email address:");
         String recipientAddress = sc.nextLine();
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(recipientAddress);
         simpleMailMessage.setSubject(subject);
-        simpleMailMessage.setText(text.toString());
+        simpleMailMessage.setText(data.toString());
         javaMailSender.send(simpleMailMessage);
     }
 

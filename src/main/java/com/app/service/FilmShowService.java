@@ -81,7 +81,7 @@ public class FilmShowService {
         filmShow.setRepertoire(repertoire);
         filmShow.setMovie(movie);
         filmShow.setCinemaHall(cinemaHall);
-
+        filmShow.setTicketsAvailable(cinemaHall.getPlaces().size());
         filmShowRepository.save(filmShow);
         return filmShow.getId();
     }

@@ -3,7 +3,6 @@ package com.app.service.mappers;
 import com.app.dto.createDto.*;
 import com.app.model.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public interface CreateMappers {
@@ -62,6 +61,8 @@ public interface CreateMappers {
     static Ticket fromCreateTicketDtoToTicket(CreateTicketDto ticketDto) {
         return ticketDto == null ? null : Ticket.builder()
                 .ticketType(ticketDto.getTicketType())
+                .price(ticketDto.getPrice())
+
                 .build();
     }
 
@@ -69,6 +70,7 @@ public interface CreateMappers {
         return createPlaceDto == null ? null : Place.builder()
                 .row(createPlaceDto.getRow())
                 .number(createPlaceDto.getNumber())
+                .available(createPlaceDto.getAvailable())
                 .build();
     }
 
