@@ -23,8 +23,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class MovieService {
 
     private final MovieRepository movieRepository;

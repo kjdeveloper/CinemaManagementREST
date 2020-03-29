@@ -9,12 +9,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface FilmShowRepository extends JpaRepository<FilmShow, Long> {
 
     Optional<FilmShow> findByStartTimeAndCinemaHall_Id(LocalDateTime start, Long cinemaHallId);
 
     List<FilmShow> findAllByMovie_Title(String title);
+
+    Set<FilmShow> findAllByMovie_Id(Long id);
 
     List<FilmShow> findAllByMovie_TitleAndMovie_Director(String title, String director);
 }

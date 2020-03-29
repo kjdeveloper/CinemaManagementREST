@@ -25,5 +25,8 @@ public class Place extends BaseEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cinema_hall_id")
     private CinemaHall cinemaHall;
+
+    @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "place")
+    private Ticket ticket;
 }
 

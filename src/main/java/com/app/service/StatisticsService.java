@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class StatisticsService {
 
     private final TicketRepository ticketRepository;

@@ -5,21 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GetFilmShowDto {
+public class GetReservationDto {
 
     private Long id;
-    private Long version;
-    private LocalDateTime startTime;
-    private Integer ticketsAvailable;
-    private GetMovieDto movie;
-    private GetCinemaHallDto cinemaHall;
     private Set<GetTicketDto> tickets;
-
 }

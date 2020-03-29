@@ -21,8 +21,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class SecurityService {
 
     private final UserRepository userRepository;

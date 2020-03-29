@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GetHistoryTicket {
+public class GetHistoryTicketDto {
 
     private FilmShow filmShow;
     private BigDecimal price;

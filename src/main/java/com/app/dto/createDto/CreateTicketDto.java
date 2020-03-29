@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -17,13 +18,10 @@ import java.time.LocalDateTime;
 public class CreateTicketDto {
 
     private Long id;
-    private LocalDate date;
-    private Integer quantity;
     private TicketType ticketType;
-    private City city;
+    private BigDecimal price;
+    private Long placeId;
+    private Long cinemaId;
     private Long userId;
-    private Long movieId;
-    private LocalDateTime startTime;
-
-
+    private Long filmShowId;
 }

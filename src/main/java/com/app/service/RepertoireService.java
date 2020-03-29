@@ -5,7 +5,6 @@ import com.app.dto.getDto.GetRepertoireDto;
 import com.app.exception.AppException;
 import com.app.model.Cinema;
 import com.app.model.Repertoire;
-import com.app.model.enums.City;
 import com.app.repository.CinemaRepository;
 import com.app.repository.RepertoireRepository;
 import com.app.service.mappers.CreateMappers;
@@ -13,7 +12,6 @@ import com.app.service.mappers.GetMappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -23,8 +21,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class RepertoireService {
 
     private final RepertoireRepository repertoireRepository;

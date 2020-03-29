@@ -1,4 +1,4 @@
-/*
+
 package com.app.service.conf;
 
 import com.app.model.FilmShow;
@@ -22,7 +22,7 @@ public class ScheduledTask {
     @Scheduled(fixedRate = 2000)
     public void scheduleReleaseOfSeatsWithFixedRate() {
 
-       List<FilmShow> filmShowList = filmShowRepository
+        List<FilmShow> filmShowList = filmShowRepository
                 .findAll()
                 .stream()
                 .filter(f -> f.getStartTime().plusMinutes(f.getMovie().getDuration()).isAfter(LocalDateTime.now()))
@@ -36,4 +36,4 @@ public class ScheduledTask {
         }
     }
 }
-*/
+

@@ -1,8 +1,10 @@
 package com.app.service;
 
-import com.app.dto.createDto.CreateFilmShowDto;
+import com.app.dto.createDto.CreateHistoryTicketDto;
 import com.app.dto.createDto.CreateTicketDto;
-import com.app.dto.getDto.GetHistoryTicket;
+import com.app.dto.createDto.CreateHistoryByDateDto;
+import com.app.dto.createDto.CreateHistoryByPriceDto;
+import com.app.dto.getDto.GetHistoryTicketDto;
 import com.app.dto.getDto.GetTicketDto;
 import com.app.exception.AppException;
 import com.app.model.FilmShow;
@@ -24,34 +26,34 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class TicketService {
 
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
     private final FilmShowRepository filmShowRepository;
-    private final MovieRepository movieRepository;
-    private final RepertoireRepository repertoireRepository;
     private final CinemaRepository cinemaRepository;
-    private final PlaceRepository placeRepository;
     private final CinemaHallRepository cinemaHallRepository;
+    private final PlaceRepository placeRepository;
+
     private final MailService mailService;
 
-    private Set<Place> getJustAvailablePlacesOnFilmShow(FilmShow filmShow) {
+    Set<Place> getJustAvailablePlacesOnFilmShow(FilmShow filmShow) {
         return cinemaHallRepository
                 .findCinemaHallByCinema_Id(filmShow.getRepertoire().getCinema().getId())
                 .stream()
                 .filter(f -> f.getFilmShow().getId().equals(filmShow.getId()))
-                .flatMap(c -> c.getPlaces().stream())
+                .flatMap(c -> c.getPlaces()
+                        .stream())
                 .filter(Place::getAvailable)
                 .collect(Collectors.toSet());
     }
 
-    private Place getPlaceFromAvailablePlaces(Set<Place> availablePlaces, CreateTicketDto ticketDto) {
-        return availablePlaces
+    Place getPlaceFromAvailablePlaces(FilmShow filmShow, Long placeId) {
+        return getJustAvailablePlacesOnFilmShow(filmShow)
                 .stream()
-                .filter(pla -> pla.getId().equals(ticketDto.getPlaceId()))
+                .filter(pla -> pla.getId().equals(placeId))
                 .findFirst()
                 .orElseThrow(() -> new AppException("Place doesn't exist"));
     }
@@ -77,12 +79,13 @@ public class TicketService {
         User user = userRepository.findById(ticketDto.getUserId())
                 .orElseThrow(() -> new AppException("User with given id doesn't exist"));
 
-        Place place = getPlaceFromAvailablePlaces(availablePlaces, ticketDto);
+        Place place = getPlaceFromAvailablePlaces(filmShow, ticketDto.getPlaceId());
+        place.setAvailable(false);
+        placeRepository.save(place);
 
         Ticket ticket = CreateMappers.fromCreateTicketDtoToTicket(ticketDto);
-
         ticketRepository.save(ticket);
-        place.setAvailable(false);
+
         filmShow.setTicketsAvailable(filmShow.getTicketsAvailable() - 1);
         filmShowRepository.save(filmShow);
 
@@ -98,7 +101,7 @@ public class TicketService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private TicketType getTicketTypeFromCustomer() {
+    TicketType getTicketTypeFromCustomer() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What kind of ticket you want to buy? (NORMAL/REDUCE/FAMILY)");
         return TicketType.valueOf(scanner.nextLine());
@@ -120,7 +123,7 @@ public class TicketService {
         Set<Ticket> tickets = new HashSet<>();
 
         for (int i = 0; i < quantity; i++) {
-            Place place = getPlaceFromAvailablePlaces(availablePlaces, ticketDto);
+            Place place = getPlaceFromAvailablePlaces(filmShow, ticketDto.getPlaceId());
 
             TicketType ticketType = getTicketTypeFromCustomer();
             Ticket ticket = Ticket.builder()
@@ -130,8 +133,14 @@ public class TicketService {
                     .user(user)
                     .place(place)
                     .price(ticketType.getPrice())
+                    .ticketType(ticketDto.getTicketType())
                     .build();
+
             ticketRepository.save(ticket);
+
+            place.setAvailable(false);
+            placeRepository.save(place);
+
             tickets.add(ticket);
         }
 
@@ -149,60 +158,11 @@ public class TicketService {
                 " for '" + filmShow.getMovie() + "'.";
     }
 
-    private Set<Place> checkTheAvailabilityOfPlaces(List<Long> placeId) {
-        Set<Place> places = new HashSet<>();
+    public List<GetHistoryTicketDto> getHistoryOfTickets(CreateHistoryTicketDto createHistoryTicketDto) {
+        Long userId = createHistoryTicketDto.getUserId();
+        Boolean sendMail = createHistoryTicketDto.getSendMail();
+        Boolean saveToFile = createHistoryTicketDto.getSaveToFile();
 
-        for (Long id : placeId) {
-            Place place = placeRepository
-                    .findById(id)
-                    .orElseThrow(() -> new AppException("Place doesn't exist"));
-
-            if (!place.getAvailable()) {
-                throw new AppException("Place is not available on this film show");
-            }
-
-            place.setAvailable(false);
-            places.add(place);
-        }
-        return places;
-    }
-
-    public String reserveTicket(Long userId, Long filmShowId, List<Long> placesId) {
-        if (Objects.isNull(userId)) {
-            throw new AppException("User id is null");
-        }
-        if (Objects.isNull(filmShowId)) {
-            throw new AppException("Film Show id is null");
-        }
-        if (Objects.isNull(placesId)) {
-            throw new AppException("Places id is null");
-        }
-
-        FilmShow filmShow = filmShowRepository.findById(filmShowId)
-                .orElseThrow(() -> new AppException("Film Show with given id doesn't exist"));
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new AppException("User with given id doesn't exist"));
-
-        Set<Place> availablePlaces = getJustAvailablePlacesOnFilmShow(filmShow);
-        Integer reservedPlaces = placesId.size();
-
-        if (availablePlaces.size() < reservedPlaces) {
-            throw new AppException("There is not enough available seats");
-        }
-
-        Set<Place> places = checkTheAvailabilityOfPlaces(placesId);
-
-        filmShow.setTicketsAvailable(filmShow.getTicketsAvailable() - reservedPlaces);
-
-        return "Dear user " + user.getUsername() +
-                ". You just reserved: " + reservedPlaces +
-                " your places: " + places +
-                " for '" + filmShow.getMovie() +
-                "'. Remember that you must come 30 minutes before film show to pick up these tickets. Otherwise they will be lost.";
-    }
-
-    public List<GetHistoryTicket> getHistoryOfTickets(Long userId, Boolean sendMail, Boolean getFile) {
         if (Objects.isNull(userId)) {
             throw new AppException("id is null");
         }
@@ -212,7 +172,7 @@ public class TicketService {
 
         final String subject = "Tickets history";
 
-        List<GetHistoryTicket> tickets = user.getTickets().
+        List<GetHistoryTicketDto> tickets = user.getTickets().
                 stream()
                 .map(GetMappers::fromTicketToGetHistoryTicket)
                 .collect(Collectors.toList());
@@ -221,13 +181,20 @@ public class TicketService {
             mailService.sendEmail(subject, tickets);
         }
 
-        if (getFile) {
+        if (saveToFile) {
             FileService.saveToFile(subject + "/" + LocalDateTime.now(), tickets);
         }
         return tickets;
     }
 
-    public List<GetHistoryTicket> getHistoryOfTicketsByPrice(BigDecimal from, BigDecimal to, Long userId, Boolean sendMail, Boolean getFile) {
+    public List<GetHistoryTicketDto> getHistoryOfTicketsByPrice(CreateHistoryByPriceDto historyByPriceDto) {
+
+        Long userId = historyByPriceDto.getUserId();
+        BigDecimal from = historyByPriceDto.getFrom();
+        BigDecimal to = historyByPriceDto.getTo();
+        Boolean sendMail = historyByPriceDto.getSendMail();
+        Boolean saveToFile = historyByPriceDto.getGetFile();
+
         if (Objects.isNull(userId)) {
             throw new AppException("id is null");
         }
@@ -246,13 +213,13 @@ public class TicketService {
 
         String subject = "Tickets history from :" + from + " to :" + to + " zl";
 
-        List<GetHistoryTicket> tickets = new ArrayList<>();
+        List<GetHistoryTicketDto> tickets = new ArrayList<>();
 
         user.getTickets()
                 .stream()
                 .filter(p -> p.getPrice().compareTo(from) > 0 && p.getPrice().compareTo(to) < 0)
                 .forEach(t -> {
-                    tickets.add(GetHistoryTicket.builder()
+                    tickets.add(GetHistoryTicketDto.builder()
                             .price(t.getPrice())
                             .ticketType(t.getTicketType())
                             .filmShow(t.getFilmShow())
@@ -263,14 +230,21 @@ public class TicketService {
             mailService.sendEmail(subject, tickets);
         }
 
-        if (getFile) {
+        if (saveToFile) {
             FileService.saveToFile(subject + "/" + LocalDateTime.now(), tickets);
         }
 
         return tickets;
     }
 
-    public List<GetHistoryTicket> getHistoryOfTicketsByDate(LocalDate from, LocalDate to, Long userId, Boolean sendMail, Boolean getFile) {
+    public List<GetHistoryTicketDto> getHistoryOfTicketsByDate(CreateHistoryByDateDto historyByDateDto) {
+
+        Long userId = historyByDateDto.getUserId();
+        LocalDate from = historyByDateDto.getFrom();
+        LocalDate to = historyByDateDto.getTo();
+        Boolean sendMail = historyByDateDto.getSendMail();
+        Boolean saveToFile = historyByDateDto.getGetFile();
+
         if (Objects.isNull(userId)) {
             throw new AppException("id is null");
         }
@@ -290,13 +264,13 @@ public class TicketService {
 
         String subject = "Tickets history from date " + from + " until " + to + "";
 
-        List<GetHistoryTicket> tickets = new ArrayList<>();
+        List<GetHistoryTicketDto> tickets = new ArrayList<>();
 
         user.getTickets()
                 .stream()
                 .filter(p -> p.getFilmShow().getRepertoire().getDate().compareTo(from) > 0 && p.getFilmShow().getRepertoire().getDate().compareTo(to) < 0)
                 .forEach(t -> {
-                    tickets.add(GetHistoryTicket.builder()
+                    tickets.add(GetHistoryTicketDto.builder()
                             .price(t.getPrice())
                             .ticketType(t.getTicketType())
                             .filmShow(t.getFilmShow())
@@ -307,7 +281,7 @@ public class TicketService {
             mailService.sendEmail(subject, tickets);
         }
 
-        if (getFile) {
+        if (saveToFile) {
             FileService.saveToFile(subject + "/" + LocalDateTime.now(), tickets);
         }
 

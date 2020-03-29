@@ -110,8 +110,8 @@ public interface GetMappers {
                 .build();
     }
 
-    static GetHistoryTicket fromTicketToGetHistoryTicket(Ticket ticket){
-        return ticket == null ? null : GetHistoryTicket
+    static GetHistoryTicketDto fromTicketToGetHistoryTicket(Ticket ticket){
+        return ticket == null ? null : GetHistoryTicketDto
                 .builder()
                 .price(ticket.getPrice())
                 .ticketType(ticket.getTicketType())

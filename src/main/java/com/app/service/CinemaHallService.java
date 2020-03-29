@@ -1,7 +1,6 @@
 package com.app.service;
 
 import com.app.dto.createDto.CreateCinemaHallDto;
-import com.app.dto.createDto.CreatePlaceDto;
 import com.app.dto.getDto.GetCinemaHallDto;
 import com.app.exception.AppException;
 import com.app.model.Cinema;
@@ -9,15 +8,12 @@ import com.app.model.CinemaHall;
 import com.app.model.Place;
 import com.app.repository.CinemaHallRepository;
 import com.app.repository.CinemaRepository;
-import com.app.repository.PlaceRepository;
 import com.app.service.mappers.CreateMappers;
 import com.app.service.mappers.GetMappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Array;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;

@@ -4,7 +4,6 @@ import com.app.dto.createDto.CreateCinemaDto;
 import com.app.dto.getDto.GetCinemaDto;
 import com.app.exception.AppException;
 import com.app.model.Cinema;
-import com.app.model.CinemaHall;
 import com.app.repository.CinemaHallRepository;
 import com.app.repository.CinemaRepository;
 import com.app.repository.RepertoireRepository;

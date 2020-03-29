@@ -1,9 +1,12 @@
 package com.app.dto.getDto;
 
+import com.app.model.enums.TicketType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
@@ -12,8 +15,11 @@ import lombok.NoArgsConstructor;
 public class GetTicketDto {
 
     private Long id;
-    private GetUserDto user;
     private Long version;
+    private BigDecimal price;
+    private GetUserDto user;
     private GetFilmShowDto filmShow;
-
+    private GetCinemaDto cinema;
+    private GetPlaceDto place;
+    private TicketType ticketType;
 }

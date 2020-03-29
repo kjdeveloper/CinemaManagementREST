@@ -2,19 +2,16 @@
 package com.app.service;
 
 import com.app.dto.createDto.CreatePlaceDto;
-import com.app.dto.getDto.GetPlaceDto;
 import com.app.model.CinemaHall;
 import com.app.model.Place;
-import com.app.repository.CinemaHallRepository;
 import com.app.repository.PlaceRepository;
 import com.app.service.mappers.CreateMappers;
-import com.app.service.mappers.GetMappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @Transactional

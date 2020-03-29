@@ -5,14 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class CreatePlaceDto {
+import java.util.Set;
 
-    private Long cinemaHallId;
-    private Boolean available;
-    private Integer row;
-    private Integer number;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class CreateReservationDto {
+
+    private Long userId;
+    private Long filmShowId;
+    private Set<Long> placesId;
 }

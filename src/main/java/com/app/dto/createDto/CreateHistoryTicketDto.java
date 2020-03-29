@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CreatePlaceDto {
+public class CreateHistoryTicketDto {
 
-    private Long cinemaHallId;
-    private Boolean available;
-    private Integer row;
-    private Integer number;
+    private Long userId;
+    private Boolean sendMail;
+    private Boolean saveToFile;
 }

@@ -62,7 +62,6 @@ public interface CreateMappers {
         return ticketDto == null ? null : Ticket.builder()
                 .ticketType(ticketDto.getTicketType())
                 .price(ticketDto.getPrice())
-
                 .build();
     }
 

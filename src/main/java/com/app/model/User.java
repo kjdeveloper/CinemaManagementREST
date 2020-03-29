@@ -8,6 +8,7 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -40,7 +41,7 @@ public class User extends BaseEntity {
     private Set<Movie> favouriteMovies;
 
     public Long addFavouriteMovie(Movie movie) {
-        if (movie == null) {
+        if (Objects.isNull(movie)) {
             throw new AppException("Movie is null");
         }
         favouriteMovies.add(movie);
@@ -48,7 +49,7 @@ public class User extends BaseEntity {
     }
 
     public void deleteFavouriteMovie(Movie movie) {
-        if (movie == null) {
+        if (Objects.isNull(movie)) {
             throw new AppException("Movie is null");
         }
         favouriteMovies.remove(movie);
