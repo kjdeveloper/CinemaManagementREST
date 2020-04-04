@@ -34,4 +34,13 @@ public class Movie extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Override
+    public String toString() {
+        return "Movie:" +
+                "title: " + title +
+                ", description: " + description +
+                ", director: " + director +
+                ", duration: " + duration +
+                ", genre: " + genre;
+    }
 }

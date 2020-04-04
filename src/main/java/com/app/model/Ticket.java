@@ -1,7 +1,6 @@
 package com.app.model;
 
 import com.app.model.base.BaseEntity;
-import com.app.model.enums.TicketType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,9 +20,10 @@ import java.time.LocalDateTime;
 @Table(name = "tickets")
 public class Ticket extends BaseEntity {
 
-    private BigDecimal price;
+    private Boolean reservation;
 
-    @Enumerated(EnumType.STRING)
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "ticket_type_id")
     private TicketType ticketType;
 
     @OneToOne(cascade = CascadeType.PERSIST)
@@ -40,11 +39,20 @@ public class Ticket extends BaseEntity {
     private Cinema cinema;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "user_id", unique = true)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "ticket_id")
-    private Reservation reservation;
+    @Override
+    public String toString() {
+        return "Ticket: " +
+                ", ticketType: " + ticketType +
+                "price: " + ticketType.getPrice() +
+                ", place: row: " + place.getRow() +
+                ", place: number: " + place.getNumber() +
+                ", film show: " + filmShow.getMovie() +
+                ", film show time: " + filmShow.getStartTime() +
+                ", cinema: " + cinema.getName() +
+                ", user: " + user.getUsername();
+    }
 }
 

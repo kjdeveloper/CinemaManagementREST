@@ -1,4 +1,4 @@
-package com.app.service;
+package com.app.service.mail;
 
 import com.app.dto.getDto.GetUserDto;
 import com.app.exception.AppException;

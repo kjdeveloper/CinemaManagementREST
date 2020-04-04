@@ -37,4 +37,14 @@ public class FilmShow extends BaseEntity {
 
     @OneToMany(mappedBy = "filmShow", fetch = FetchType.EAGER)
     private Set<Ticket> tickets;
+
+    @Override
+    public String toString() {
+        return "FilmShow:" +
+                " startTime: " + startTime +
+                ", ticketsAvailable: " + ticketsAvailable +
+                ", cinemaHall: " + cinemaHall +
+                ", repertoire: " + repertoire +
+                ", tickets: " + tickets;
+    }
 }

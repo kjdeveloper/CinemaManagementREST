@@ -3,7 +3,7 @@ package com.app.controller;
 import com.app.dto.data.Info;
 import com.app.dto.getDto.GetMovieDto;
 import com.app.model.enums.City;
-import com.app.model.enums.TicketType;
+import com.app.model.TicketType;
 import com.app.service.StatisticsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

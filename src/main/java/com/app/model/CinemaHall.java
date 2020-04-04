@@ -34,4 +34,11 @@ public class CinemaHall extends BaseEntity {
 
     @OneToOne(mappedBy = "cinemaHall")
     private FilmShow filmShow;
+
+    @Override
+    public String toString() {
+        return "CinemaHall: " +
+                "name: " + name +
+                ", type: " + type;
+    }
 }

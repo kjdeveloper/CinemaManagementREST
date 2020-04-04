@@ -5,15 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateTicketDto {
+public class CreateReducePricesDto {
 
-    private Long ticketTypeId;
-    private Long placeId;
-    private Long cinemaId;
-    private Long userId;
-    private Long filmShowId;
+    private String title;
+    private String percentDiscount;
+    List<String> ticketTypeList;
 }

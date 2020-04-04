@@ -18,5 +18,4 @@ public class CreateFilmShowDto {
     private Long repertoireId;
     private Long cinemaHallId;
     private Long movieId;
-    private Integer ticketsAvailable;
 }

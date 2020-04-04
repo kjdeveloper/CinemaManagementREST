@@ -1,26 +1,21 @@
 package com.app.service;
 
 import com.app.dto.createDto.CreateReservationDto;
-import com.app.dto.createDto.CreateTicketDto;
 import com.app.dto.getDto.GetReservationDto;
 import com.app.dto.getDto.GetTicketDto;
 import com.app.exception.AppException;
 import com.app.model.*;
-import com.app.model.enums.TicketType;
-import com.app.repository.FilmShowRepository;
-import com.app.repository.PlaceRepository;
-import com.app.repository.ReservationRepository;
-import com.app.repository.UserRepository;
+import com.app.repository.*;
 import com.app.service.mappers.GetMappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 @Transactional
@@ -30,46 +25,41 @@ public class ReservationService {
     private final FilmShowRepository filmShowRepository;
     private final UserRepository userRepository;
     private final PlaceRepository placeRepository;
-    private final ReservationRepository reservationRepository;
+    private final TicketTypeRepository ticketTypeRepository;
+    private final TicketRepository ticketRepository;
 
     private final TicketService ticketService;
 
-    public String reserveTicket(CreateReservationDto reservationDto) {
+    public String reserveTicket(Long userId, Set<CreateReservationDto> reservationsDto) {
+        if (Objects.isNull(reservationsDto)) {
+            throw new AppException("List of reservations is null");
+        }
+        Set<Ticket> tickets = new HashSet<>();
+        Integer reservedPlaces = reservationsDto.size();
 
-        Long filmShowId = reservationDto.getFilmShowId();
-        Long userId = reservationDto.getUserId();
-        Set<Long> placesId = reservationDto.getPlacesId();
-
-        if (Objects.isNull(userId)) {
-            throw new AppException("User id is null");
-        }
-        if (Objects.isNull(filmShowId)) {
-            throw new AppException("Film Show id is null");
-        }
-        if (Objects.isNull(placesId)) {
-            throw new AppException("Places id is null");
-        }
+        Long filmShowId = reservationsDto
+                .stream()
+                .map(CreateReservationDto::getFilmShowId)
+                .findFirst()
+                .orElse(null);
 
         FilmShow filmShow = filmShowRepository.findById(filmShowId)
-                .orElseThrow(() -> new AppException("Film Show with given id doesn't exist"));
+                .orElseThrow(() -> new AppException("Film show doesn't exist"));
+
+        Set<Place> availablePlaces = ticketService.getJustAvailablePlacesOnFilmShow(filmShow);
+
+        if (availablePlaces.size() < reservedPlaces) {
+            throw new AppException("There is not enough available seats");
+        }
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException("User with given id doesn't exist"));
 
-        Set<Place> availablePlaces = ticketService.getJustAvailablePlacesOnFilmShow(filmShow);
+        for (CreateReservationDto reservation : reservationsDto) {
+            TicketType ticketType = ticketTypeRepository.findById(reservation.getTicketTypeId())
+                    .orElseThrow(() -> new AppException("Ticket type doesn't exist"));
 
-        Integer reservedPlaces = placesId.size();
-        if (availablePlaces.size() < reservedPlaces) {
-            throw new AppException("There is not enough available seats");
-        }
-        filmShow.setTicketsAvailable(filmShow.getTicketsAvailable() - reservedPlaces);
-
-        Set<Ticket> tickets = new HashSet<>();
-
-        for (Long id : placesId) {
-            Place place = ticketService.getPlaceFromAvailablePlaces(filmShow, id);
-
-            TicketType ticketType = ticketService.getTicketTypeFromCustomer();
+            Place place = ticketService.getPlaceFromAvailablePlaces(filmShow, reservation.getPlaceId());
 
             Ticket ticket = Ticket.builder()
                     .ticketType(ticketType)
@@ -77,36 +67,29 @@ public class ReservationService {
                     .cinema(filmShow.getCinemaHall().getCinema())
                     .user(user)
                     .place(place)
-                    .price(ticketType.getPrice())
+                    .reservation(true)
                     .build();
 
             place.setAvailable(false);
             placeRepository.save(place);
+            ticketRepository.save(ticket);
             tickets.add(ticket);
         }
-        Reservation reservation = Reservation
-                .builder()
-                .tickets(tickets)
-                .build();
 
-        reservationRepository.save(reservation);
+        filmShow.setTicketsAvailable(filmShow.getTicketsAvailable() - reservedPlaces);
 
-        GetReservationDto getReservationDto = GetReservationDto.builder()
-                .id(reservation.getId())
-                .tickets(reservation.getTickets()
-                        .stream()
-                        .map(GetMappers::fromTicketToGetTicketDto)
-                        .collect(Collectors.toSet()))
-                .build();
+        List<GetTicketDto> reservedTickets = tickets
+                .stream()
+                .map(GetMappers::fromTicketToGetTicketDto)
+                .collect(Collectors.toList());
 
         return "Dear user " + user.getUsername() +
-                ". You just reserved: " + reservedPlaces +
-                " your reservation: " + getReservationDto +
-                " for '" + filmShow.getMovie() +
+                ". You just reserved: " + reservedTickets.size() + " place" +
+                " your reservation: " + reservedTickets +
                 "'. Remember that you must come 30 minutes before film show to pick up these tickets. Otherwise they will be lost.";
     }
 
-    public String getReservation(Long reservationId) {
+   /* public String getReservation(Long reservationId) {
 
         if (Objects.isNull(reservationId)) {
             throw new AppException("Id is null");
@@ -122,7 +105,7 @@ public class ReservationService {
                         .isAfter(LocalDateTime.now()
                                 .minusMinutes(25)))
                 .collect(Collectors.toSet());
-        
+
         if (!tickets.isEmpty()) {
             reservationRepository.delete(reservation);
             throw new AppException("The reservation has been canceled due to late pickup");
@@ -136,21 +119,20 @@ public class ReservationService {
                         .collect(Collectors.toSet()))
                 .build();
 
-        String result = null;
+        List<CreateTicketDto> createTicketDtoList = new ArrayList<>();
 
         for (GetTicketDto ticketDto : getReservationDto.getTickets()) {
             CreateTicketDto createTicketDto = CreateTicketDto.builder()
                     .cinemaId(ticketDto.getCinema().getId())
                     .filmShowId(ticketDto.getFilmShow().getId())
                     .placeId(ticketDto.getPlace().getId())
-                    .price(ticketDto.getPrice())
                     .userId(ticketDto.getUser().getId())
-                    .ticketType(ticketDto.getTicketType())
+                    .ticketTypeId(ticketDto.getId())
                     .build();
 
-            result = ticketService.buyTickets(getReservationDto.getTickets().size(), createTicketDto);
-        }
-        return result;
-    }
 
+            createTicketDtoList.add(createTicketDto);
+        }
+        return ticketService.buyTickets(createTicketDtoList);
+    }*/
 }

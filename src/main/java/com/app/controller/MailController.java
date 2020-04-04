@@ -1,7 +1,7 @@
 package com.app.controller;
 
 import com.app.dto.data.Info;
-import com.app.service.MailService;
+import com.app.service.mail.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

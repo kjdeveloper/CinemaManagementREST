@@ -55,5 +55,14 @@ public class User extends BaseEntity {
         favouriteMovies.remove(movie);
     }
 
-
+    @Override
+    public String toString() {
+        return "User: " +
+                "name: " + name +
+                ", surname: " + surname +
+                ", age: " + age +
+                ", username: " + username +
+                ", email: " + email +
+                ", roles: " + roles;
+    }
 }

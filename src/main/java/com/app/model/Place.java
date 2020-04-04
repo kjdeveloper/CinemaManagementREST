@@ -28,5 +28,14 @@ public class Place extends BaseEntity {
 
     @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "place")
     private Ticket ticket;
+
+    @Override
+    public String toString() {
+        return "Place: " +
+                "available: " + available +
+                ", row: " + row +
+                ", number: " + number +
+                ", cinema hall: " + cinemaHall.getName();
+    }
 }
 

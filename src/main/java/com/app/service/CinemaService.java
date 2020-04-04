@@ -51,8 +51,7 @@ public class CinemaService {
 
         if (cinemaRepository.findByName(createCinemaDto.getName()).isPresent()) {
             throw new AppException("Cinema with name "
-                    + createCinemaDto.getName() + " in city "
-                    + createCinemaDto.getCity() + " already exist");
+                    + createCinemaDto.getName() + " already exist");
         }
 
         Cinema cinema = CreateMappers.fromCreateCinemaDtoToCinema(createCinemaDto);

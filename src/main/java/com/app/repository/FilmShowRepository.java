@@ -1,5 +1,6 @@
 package com.app.repository;
 
+import com.app.model.CinemaHall;
 import com.app.model.FilmShow;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,6 @@ public interface FilmShowRepository extends JpaRepository<FilmShow, Long> {
     Set<FilmShow> findAllByMovie_Id(Long id);
 
     List<FilmShow> findAllByMovie_TitleAndMovie_Director(String title, String director);
+
+    List<FilmShow> findByCinemaHall_Id(Long cinemaHallId);
 }

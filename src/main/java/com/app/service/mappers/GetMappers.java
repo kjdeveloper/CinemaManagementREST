@@ -73,8 +73,8 @@ public interface GetMappers {
         return ticket == null ? null : GetTicketDto.builder()
                 .id(ticket.getId())
                 .version(ticket.getVersion())
-                .price(ticket.getPrice())
-                .place(ticket.getPlace() == null ? null :fromPlaceToGetPlaceDto(ticket.getPlace()))
+                .ticketTypeDto(ticket.getTicketType() == null ? null : fromTicketTypeToGetTicketTypeDto(ticket.getTicketType()))
+                .place(ticket.getPlace() == null ? null : fromPlaceToGetPlaceDto(ticket.getPlace()))
                 .user(ticket.getUser() == null ? null : fromUserToGetUserDto(ticket.getUser()))
                 .filmShow(ticket.getFilmShow() == null ? null : fromFilmShowToGetFilmShowDto(ticket.getFilmShow()))
                 .cinema(ticket.getCinema() == null ? null : fromCinemaToGetCinemaDto(ticket.getCinema()))
@@ -84,6 +84,8 @@ public interface GetMappers {
     static GetUserDto fromUserToGetUserDto(User user) {
         return user == null ? null : GetUserDto.builder()
                 .id(user.getId())
+                .version(user.getVersion())
+                .username(user.getUsername())
                 .name(user.getName())
                 .age(user.getAge())
                 .email(user.getEmail())
@@ -94,8 +96,8 @@ public interface GetMappers {
     static GetRoleDto fromRoleToGetRoleDto(Role role) {
         return role == null ? null : GetRoleDto.builder()
                 .id(role.getId())
-                .name(role.getName())
                 .version(role.getVersion())
+                .name(role.getName())
                 .build();
     }
 
@@ -110,12 +112,21 @@ public interface GetMappers {
                 .build();
     }
 
-    static GetHistoryTicketDto fromTicketToGetHistoryTicket(Ticket ticket){
+    static GetHistoryTicketDto fromTicketToGetHistoryTicket(Ticket ticket) {
         return ticket == null ? null : GetHistoryTicketDto
                 .builder()
-                .price(ticket.getPrice())
-                .ticketType(ticket.getTicketType())
-                .filmShow(ticket.getFilmShow())
+                .version(ticket.getVersion())
+                .ticketTypeDto(ticket.getTicketType() == null ? null : fromTicketTypeToGetTicketTypeDto(ticket.getTicketType()))
+                .filmShow(ticket.getFilmShow().getMovie().toString())
+                .build();
+    }
+
+    static GetTicketTypeDto fromTicketTypeToGetTicketTypeDto(TicketType ticketType) {
+        return ticketType == null ? null : GetTicketTypeDto.builder()
+                .id(ticketType.getId())
+                .version(ticketType.getVersion())
+                .name(ticketType.getName())
+                .price(ticketType.getPrice())
                 .build();
     }
 }

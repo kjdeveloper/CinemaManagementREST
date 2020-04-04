@@ -6,10 +6,9 @@ import com.app.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,10 +17,10 @@ public class ReservationController {
 
     private final ReservationService reservationService;
 
-    @PostMapping("/reserve")
-    public ResponseEntity<Info<String>> reserveTicket(@RequestBody CreateReservationDto createReservationDto) {
+    @PostMapping("/reserve/{userId}")
+    public ResponseEntity<Info<String>> reserveTicket(@PathVariable Long userId,  @RequestBody Set<CreateReservationDto> createReservationDto) {
         return new ResponseEntity<>(Info.<String>builder()
-                .data(reservationService.reserveTicket(createReservationDto))
+                .data(reservationService.reserveTicket(userId, createReservationDto))
                 .build(),
                 HttpStatus.CREATED);
     }

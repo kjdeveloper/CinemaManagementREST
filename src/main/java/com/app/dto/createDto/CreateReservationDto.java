@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,5 +13,6 @@ public class CreateReservationDto {
 
     private Long userId;
     private Long filmShowId;
-    private Set<Long> placesId;
+    private Long placeId;
+    private Long ticketTypeId;
 }

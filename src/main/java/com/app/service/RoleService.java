@@ -71,7 +71,6 @@ public class RoleService {
     }
 
     public Long deleteById(Long id) {
-
         if (Objects.isNull(id)) {
             throw new AppException("Id is null");
         }
@@ -84,7 +83,6 @@ public class RoleService {
     }
 
     public Long deleteAll() {
-
         long rows = roleRepository.count();
         roleRepository.deleteAll();
         return rows;

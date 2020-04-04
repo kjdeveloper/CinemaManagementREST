@@ -4,8 +4,10 @@ import com.app.dto.getDto.GetMovieDto;
 import com.app.exception.AppException;
 import com.app.model.Ticket;
 import com.app.model.enums.City;
-import com.app.model.enums.TicketType;
+import com.app.model.TicketType;
 import com.app.repository.TicketRepository;
+import com.app.service.file.FileService;
+import com.app.service.mail.MailService;
 import com.app.service.mappers.GetMappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -83,7 +85,8 @@ public class StatisticsService {
                         Map.Entry::getKey,
                         v -> v.getValue()
                                 .stream()
-                                .map(Ticket::getPrice)
+                                .map(Ticket::getTicketType)
+                                .map(TicketType::getPrice)
                                 .reduce(BigDecimal.ONE, BigDecimal::add)
                                 .divide(BigDecimal.valueOf(v.getValue().size())),
                         (v1, v2) -> v1,
@@ -111,7 +114,8 @@ public class StatisticsService {
                         Map.Entry::getKey,
                         v -> v.getValue()
                                 .stream()
-                                .map(Ticket::getPrice)
+                                .map(Ticket::getTicketType)
+                                .map(TicketType::getPrice)
                                 .reduce(BigDecimal.ONE, BigDecimal::add),
                         (v1, v2) -> v1,
                         LinkedHashMap::new

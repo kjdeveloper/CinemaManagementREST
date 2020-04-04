@@ -30,9 +30,9 @@ public class TicketController {
     }
 
     @PostMapping("/buyTickets")
-    public ResponseEntity<Info<String>> buyTickets(@PathVariable Integer quantity, @RequestBody CreateTicketDto createTicketDto) {
+    public ResponseEntity<Info<String>> buyTickets(@RequestBody List<CreateTicketDto> createTicketDtoList) {
         return new ResponseEntity<>(Info.<String>builder()
-                .data(ticketService.buyTickets(quantity, createTicketDto))
+                .data(ticketService.buyTickets(createTicketDtoList))
                 .build(),
                 HttpStatus.CREATED);
     }

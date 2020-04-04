@@ -5,15 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateTicketDto {
+public class CreateTicketTypeDto {
 
-    private Long ticketTypeId;
-    private Long placeId;
-    private Long cinemaId;
-    private Long userId;
-    private Long filmShowId;
+    private String name;
+    private BigDecimal price;
 }

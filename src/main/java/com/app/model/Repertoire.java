@@ -28,4 +28,11 @@ public class Repertoire extends BaseEntity {
     @JoinColumn(name = "cinema_id")
     private Cinema cinema;
 
+    @Override
+    public String toString() {
+        return "Repertoire: " +
+                "date: " + date +
+                ", film shows: " + filmShows +
+                ", cinema: " + cinema.getName();
+    }
 }

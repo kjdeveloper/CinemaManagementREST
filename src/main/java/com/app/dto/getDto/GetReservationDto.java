@@ -12,7 +12,5 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class GetReservationDto {
-
-    private Long id;
     private Set<GetTicketDto> tickets;
 }

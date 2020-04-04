@@ -1,6 +1,5 @@
 package com.app.dto.getDto;
 
-import com.app.model.enums.TicketType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,5 +20,15 @@ public class GetTicketDto {
     private GetFilmShowDto filmShow;
     private GetCinemaDto cinema;
     private GetPlaceDto place;
-    private TicketType ticketType;
+    private GetTicketTypeDto ticketTypeDto;
+
+    @Override
+    public String toString() {
+        return "Ticket " +
+                "price: " + getTicketTypeDto().getPrice() +
+                ", user: " + user.getUsername() +
+                ", movie: " + filmShow.getMovie().getTitle() +
+                ", cinema: " + cinema.getCity() +
+                ", row: " + place.getRow() + ", number: " + place.getNumber();
+    }
 }

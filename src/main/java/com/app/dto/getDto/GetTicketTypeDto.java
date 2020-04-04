@@ -1,6 +1,5 @@
 package com.app.dto.getDto;
 
-import com.app.model.TicketType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,10 +11,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GetHistoryTicketDto {
+public class GetTicketTypeDto {
 
-    private String filmShow;
-    private BigDecimal price;
+    private Long id;
     private Long version;
-    private GetTicketTypeDto ticketTypeDto;
+    private String name;
+    private BigDecimal price;
 }

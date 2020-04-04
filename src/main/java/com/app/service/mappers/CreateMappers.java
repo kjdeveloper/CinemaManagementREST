@@ -36,7 +36,6 @@ public interface CreateMappers {
     static FilmShow fromCreateFilmShowDtoToFilmShow(CreateFilmShowDto createFilmShowDto) {
         return createFilmShowDto == null ? null : FilmShow.builder()
                 .startTime(createFilmShowDto.getStartTime())
-                .ticketsAvailable(createFilmShowDto.getTicketsAvailable())
                 .build();
     }
 
@@ -58,13 +57,6 @@ public interface CreateMappers {
                 .build();
     }
 
-    static Ticket fromCreateTicketDtoToTicket(CreateTicketDto ticketDto) {
-        return ticketDto == null ? null : Ticket.builder()
-                .ticketType(ticketDto.getTicketType())
-                .price(ticketDto.getPrice())
-                .build();
-    }
-
     static Place fromCreatePlaceDtoToPlace(CreatePlaceDto createPlaceDto) {
         return createPlaceDto == null ? null : Place.builder()
                 .row(createPlaceDto.getRow())
@@ -76,6 +68,13 @@ public interface CreateMappers {
     static Role fromCreateRoleDtoToRole(CreateRoleDto roleDto) {
         return roleDto == null ? null : Role.builder()
                 .name(roleDto.getName().toUpperCase())
+                .build();
+    }
+
+    static TicketType fromCreateTicketTypeDtoToTicketType(CreateTicketTypeDto createTicketTypeDto) {
+        return createTicketTypeDto == null ? null : TicketType.builder()
+                .name(createTicketTypeDto.getName())
+                .price(createTicketTypeDto.getPrice())
                 .build();
     }
 

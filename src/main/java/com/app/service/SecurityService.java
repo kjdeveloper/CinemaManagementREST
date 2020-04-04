@@ -1,5 +1,6 @@
 package com.app.service;
 
+import com.app.dto.createDto.CreateMovieDto;
 import com.app.dto.createDto.CreateUserDto;
 import com.app.dto.getDto.GetUserDto;
 import com.app.exception.AppException;

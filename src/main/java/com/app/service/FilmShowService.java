@@ -64,13 +64,33 @@ public class FilmShowService {
                 .collect(Collectors.toList());
     }
 
+    private List<GetFilmShowDto> isCinemaHallAvailable(CreateFilmShowDto createFilmShowDto) {
+        if (Objects.isNull(createFilmShowDto)) {
+            throw new AppException("Cinema hall is is null");
+        }
+        return filmShowRepository
+                .findByCinemaHall_Id(createFilmShowDto.getCinemaHallId())
+                .stream()
+                .filter(f -> f.getStartTime().plusMinutes(f.getMovie().getDuration()).compareTo(createFilmShowDto.getStartTime()) >= 0)
+                .map(GetMappers::fromFilmShowToGetFilmShowDto)
+                .collect(Collectors.toList());
+    }
+
     public Long add(CreateFilmShowDto createFilmShowDto) {
         if (Objects.isNull(createFilmShowDto)) {
             throw new AppException("Film show is null");
         }
 
+        if (!isCinemaHallAvailable(createFilmShowDto).isEmpty()){
+            throw new AppException("Film show in this cinema hall and at this time already exists");
+        }
+
         Repertoire repertoire = repertoireRepository.findById(createFilmShowDto.getRepertoireId())
                 .orElseThrow(() -> new AppException("Repertoire with given id doesn't exist"));
+
+        if (repertoire.getDate().compareTo(createFilmShowDto.getStartTime().toLocalDate()) != 0){
+            throw new AppException("Wrong date");
+        }
 
         CinemaHall cinemaHall = cinemaHallRepository.findById(createFilmShowDto.getCinemaHallId())
                 .orElseThrow(() -> new AppException("Cinema has not cinema hall with given id"));
@@ -79,11 +99,12 @@ public class FilmShowService {
                 .orElseThrow(() -> new AppException("Cannot find movie with given title and director"));
 
         FilmShow filmShow = CreateMappers.fromCreateFilmShowDtoToFilmShow(createFilmShowDto);
+        Integer ticketsAvailable = cinemaHall.getPlaces().size();
 
         filmShow.setRepertoire(repertoire);
         filmShow.setMovie(movie);
         filmShow.setCinemaHall(cinemaHall);
-        filmShow.setTicketsAvailable(cinemaHall.getPlaces().size());
+        filmShow.setTicketsAvailable(ticketsAvailable);
         filmShowRepository.save(filmShow);
         return filmShow.getId();
     }

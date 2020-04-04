@@ -29,4 +29,9 @@ public class Role extends BaseEntity {
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
+    @Override
+    public String toString() {
+        return "Role: " +
+                "name: " + name;
+    }
 }

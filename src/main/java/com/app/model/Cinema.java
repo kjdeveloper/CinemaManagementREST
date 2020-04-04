@@ -33,4 +33,11 @@ public class Cinema extends BaseEntity {
 
     @OneToMany(mappedBy = "cinema")
     private Set<CinemaHall> cinemaHalls;
+
+    @Override
+    public String toString() {
+        return "Cinema: " +
+                "name: " + name +
+                ", city: " + city;
+    }
 }
