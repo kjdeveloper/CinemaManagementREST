@@ -59,7 +59,7 @@ public interface CreateMappers {
 
     static Place fromCreatePlaceDtoToPlace(CreatePlaceDto createPlaceDto) {
         return createPlaceDto == null ? null : Place.builder()
-                .row(createPlaceDto.getRow())
+                .rowNum(createPlaceDto.getRow())
                 .number(createPlaceDto.getNumber())
                 .available(createPlaceDto.getAvailable())
                 .build();

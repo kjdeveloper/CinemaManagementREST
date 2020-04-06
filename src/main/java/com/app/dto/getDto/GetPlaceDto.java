@@ -13,7 +13,7 @@ public class GetPlaceDto {
 
     private Long id;
     private boolean available;
-    private Integer row;
+    private Integer row_num;
     private Integer number;
     private Long version;
 

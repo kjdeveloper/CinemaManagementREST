@@ -18,7 +18,7 @@ public class GetCinemaHallDto {
     private String name;
     private CinemaHallType cinemaHallType;
     private Long version;
-    private Set<GetPlaceDto> places;
     private GetCinemaDto cinemaDto;
+    private Integer places;
 
 }

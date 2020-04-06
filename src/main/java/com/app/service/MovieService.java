@@ -50,13 +50,7 @@ public class MovieService {
         Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new AppException("Movie with given id doesn't exist"));
 
-        Set<GetFilmShowDto> filmShows = new HashSet<>(filmShowRepository.findAllByMovie_Id(id))
-                .stream()
-                .map(GetMappers::fromFilmShowToGetFilmShowDto)
-                .collect(Collectors.toSet());
-        
         GetMovieDto getMovieDto = GetMappers.fromMovieToGetMovieDto(movie);
-        getMovieDto.setFilmShows(filmShows);
         return getMovieDto;
     }
 

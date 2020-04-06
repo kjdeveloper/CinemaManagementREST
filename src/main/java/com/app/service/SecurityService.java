@@ -102,7 +102,7 @@ public class SecurityService {
         user.setUsername(userDto.getUsername() != null ? userDto.getUsername() : user.getUsername());
         user.setAge(userDto.getAge() != null ? userDto.getAge() : user.getAge());
         user.setEmail(userDto.getEmail() != null ? userDto.getEmail() : user.getEmail());
-        user.setPassword(userDto.getPassword() != null ? userDto.getPassword() : user.getPassword());
+        user.setPassword(userDto.getPassword() != null ? passwordEncoder.encode(userDto.getPassword()) : user.getPassword());
         user.setRoles(roles);
         return userRepository.save(user).getId();
     }
@@ -129,7 +129,7 @@ public class SecurityService {
         user.setAge(params.containsKey("age") ? Integer.parseInt(params.get("age")) : user.getAge());
         user.setEmail(params.containsKey("email") ? params.get("email") : user.getEmail());
         user.setUsername(params.containsKey("username") ? params.get("username") : user.getUsername());
-        user.setPassword(params.containsKey("password") ? params.get("password") : user.getPassword());
+        user.setPassword(params.containsKey("password") ? passwordEncoder.encode(params.get("password")) : user.getPassword());
 
         userRepository.save(user);
         return user.getId();

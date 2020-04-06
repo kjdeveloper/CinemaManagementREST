@@ -2,16 +2,20 @@
 package com.app.service;
 
 import com.app.dto.createDto.CreatePlaceDto;
+import com.app.dto.getDto.GetPlaceDto;
 import com.app.model.CinemaHall;
 import com.app.model.Place;
 import com.app.repository.PlaceRepository;
 import com.app.service.mappers.CreateMappers;
+import com.app.service.mappers.GetMappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -39,5 +43,12 @@ public class PlaceService {
         return placeDtoSet;
     }
 
+    public List<GetPlaceDto> findAll() {
+        return placeRepository
+                .findAll()
+                .stream()
+                .map(GetMappers::fromPlaceToGetPlaceDto)
+                .collect(Collectors.toList());
+    }
 }
 

@@ -76,7 +76,7 @@ public class CinemaHallService {
                 .orElseThrow(() -> new AppException("Cinema with given id doesn't exist"));
 
         CinemaHall cinemaHall = CreateMappers.fromCreateCinemaHallDtoToCinemaHall(cinemaHallDto);
-        Set<Place> places = placeService.createPlacesForHalls(cinemaHall, cinemaHallDto.getCinemaHallType().getRow(), cinemaHallDto.getCinemaHallType().getNumber());
+        Set<Place> places = placeService.createPlacesForHalls(cinemaHall, cinemaHallDto.getCinemaHallType().getRowNum(), cinemaHallDto.getCinemaHallType().getNumber());
 
         cinemaHall.setPlaces(places);
         cinemaHall.setCinema(cinema);

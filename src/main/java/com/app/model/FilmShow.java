@@ -27,6 +27,9 @@ public class FilmShow extends BaseEntity {
     @JoinColumn(name = "cinemaHall_id")
     private CinemaHall cinemaHall;
 
+    @OneToMany(mappedBy = "filmShow", fetch = FetchType.EAGER)
+    private Set<Ticket> tickets;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "repertoire_id")
     private Repertoire repertoire;
@@ -34,9 +37,6 @@ public class FilmShow extends BaseEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "movie_id")
     private Movie movie;
-
-    @OneToMany(mappedBy = "filmShow", fetch = FetchType.EAGER)
-    private Set<Ticket> tickets;
 
     @Override
     public String toString() {

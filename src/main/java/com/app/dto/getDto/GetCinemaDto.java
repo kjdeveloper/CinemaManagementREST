@@ -18,5 +18,4 @@ public class GetCinemaDto {
     private String name;
     private City city;
     private Long version;
-    Set<GetRepertoireDto> repertoires;
 }

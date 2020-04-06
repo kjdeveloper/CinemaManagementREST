@@ -28,17 +28,17 @@ public class User extends BaseEntity {
     private String email;
     private String password;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
-
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Ticket> tickets;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Movie> favouriteMovies;
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
     public Long addFavouriteMovie(Movie movie) {
         if (Objects.isNull(movie)) {

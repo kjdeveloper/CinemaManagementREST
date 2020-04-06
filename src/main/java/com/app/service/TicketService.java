@@ -77,9 +77,6 @@ public class TicketService {
             throw new AppException("There is not enough available seats");
         }
 
-        Cinema cinema = cinemaRepository.findById(ticketDto.getCinemaId())
-                .orElseThrow(() -> new AppException("Cinema doesn't exist"));
-
         User user = userRepository.findById(ticketDto.getUserId())
                 .orElseThrow(() -> new AppException("User with given id doesn't exist"));
 
@@ -94,7 +91,7 @@ public class TicketService {
                 .ticketType(ticketType)
                 .place(place)
                 .user(user)
-                .cinema(cinema)
+                .cinema(filmShow.getCinemaHall().getCinema())
                 .filmShow(filmShow)
                 .build();
 
@@ -135,7 +132,7 @@ public class TicketService {
         Set<Ticket> tickets = new HashSet<>();
         for (CreateTicketDto ticketDto1 : ticketsDto) {
             TicketType ticketType = ticketTypeRepository.findById(ticketDto1.getTicketTypeId())
-                    .orElseThrow(() -> new AppException("Ticke type doesn't exist"));
+                    .orElseThrow(() -> new AppException("Ticket type doesn't exist"));
 
             Place place = getPlaceFromAvailablePlaces(filmShow, ticketDto.getPlaceId());
 

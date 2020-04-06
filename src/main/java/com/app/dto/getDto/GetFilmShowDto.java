@@ -20,6 +20,13 @@ public class GetFilmShowDto {
     private Integer ticketsAvailable;
     private GetMovieDto movie;
     private GetCinemaHallDto cinemaHall;
-    private Set<GetTicketDto> tickets;
 
+    @Override
+    public String toString() {
+        return "Film show : " +
+                ", start time: " + startTime +
+                ", tickets available: " + ticketsAvailable +
+                ", movie: " + movie +
+                ", cinemaHall: " + cinemaHall.getName();
+    }
 }

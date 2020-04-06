@@ -19,21 +19,21 @@ public class Place extends BaseEntity {
     private Boolean available;
 
     @Column(name = "row_num")
-    private Integer row;
+    private Integer rowNum;
     private Integer number;
+
+    @OneToOne(mappedBy = "place")
+    private Ticket ticket;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cinema_hall_id")
     private CinemaHall cinemaHall;
 
-    @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "place")
-    private Ticket ticket;
-
     @Override
     public String toString() {
         return "Place: " +
                 "available: " + available +
-                ", row: " + row +
+                ", row: " + rowNum +
                 ", number: " + number +
                 ", cinema hall: " + cinemaHall.getName();
     }

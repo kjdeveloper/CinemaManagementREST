@@ -16,8 +16,6 @@ public interface GetMappers {
                 .director(movie.getDirector())
                 .duration(movie.getDuration())
                 .genre(movie.getGenre())
-                .usersAddedThisMovieToFavourites(new HashSet<>())
-                .filmShows(new HashSet<>())
                 .version(movie.getVersion())
                 .build();
     }
@@ -28,7 +26,6 @@ public interface GetMappers {
                 .city(cinema.getCity())
                 .name(cinema.getName())
                 .version(cinema.getVersion())
-                .repertoires(new HashSet<>())
                 .build();
     }
 
@@ -43,7 +40,7 @@ public interface GetMappers {
                         .getPlaces()
                         .stream()
                         .map(GetMappers::fromPlaceToGetPlaceDto)
-                        .collect(Collectors.toSet()))
+                        .collect(Collectors.toSet()).size())
                 .build();
     }
 
@@ -54,7 +51,6 @@ public interface GetMappers {
                 .ticketsAvailable(filmShow.getTicketsAvailable())
                 .startTime(filmShow.getStartTime())
                 .movie(filmShow.getMovie() == null ? null : fromMovieToGetMovieDto(filmShow.getMovie()))
-                .tickets(new HashSet<>())
                 .version(filmShow.getVersion())
                 .build();
     }
@@ -64,7 +60,6 @@ public interface GetMappers {
                 .id(repertoire.getId())
                 .date(repertoire.getDate())
                 .cinema(repertoire.getCinema() == null ? null : fromCinemaToGetCinemaDto(repertoire.getCinema()))
-                .filmShows(new HashSet<>())
                 .version(repertoire.getVersion())
                 .build();
     }
@@ -84,6 +79,10 @@ public interface GetMappers {
     static GetUserDto fromUserToGetUserDto(User user) {
         return user == null ? null : GetUserDto.builder()
                 .id(user.getId())
+                .role(user.getRoles()
+                        .stream()
+                        .map(Role::getName)
+                        .collect(Collectors.toSet()))
                 .version(user.getVersion())
                 .username(user.getUsername())
                 .name(user.getName())
@@ -106,7 +105,7 @@ public interface GetMappers {
                 .builder()
                 .id(place.getId())
                 .version(place.getVersion())
-                .row(place.getRow())
+                .row_num(place.getRowNum())
                 .number(place.getNumber())
                 .available(place.getAvailable())
                 .build();

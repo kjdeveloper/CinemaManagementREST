@@ -38,9 +38,7 @@ public interface FileService {
 
             document.add(chunk);
             document.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (DocumentException e) {
+        } catch (FileNotFoundException | DocumentException e) {
             e.printStackTrace();
         }
     }

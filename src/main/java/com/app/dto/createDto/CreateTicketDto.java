@@ -13,7 +13,6 @@ public class CreateTicketDto {
 
     private Long ticketTypeId;
     private Long placeId;
-    private Long cinemaId;
     private Long userId;
     private Long filmShowId;
 }

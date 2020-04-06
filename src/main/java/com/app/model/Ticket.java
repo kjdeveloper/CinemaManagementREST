@@ -26,7 +26,7 @@ public class Ticket extends BaseEntity {
     @JoinColumn(name = "ticket_type_id")
     private TicketType ticketType;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "place_id")
     private Place place;
 
@@ -47,7 +47,7 @@ public class Ticket extends BaseEntity {
         return "Ticket: " +
                 ", ticketType: " + ticketType +
                 "price: " + ticketType.getPrice() +
-                ", place: row: " + place.getRow() +
+                ", place: row: " + place.getRowNum() +
                 ", place: number: " + place.getNumber() +
                 ", film show: " + filmShow.getMovie() +
                 ", film show time: " + filmShow.getStartTime() +

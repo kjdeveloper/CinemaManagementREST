@@ -25,15 +25,15 @@ public class CinemaHall extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private CinemaHallType type;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "cinema_id")
-    private Cinema cinema;
+    @OneToOne(mappedBy = "cinemaHall")
+    private FilmShow filmShow;
 
     @OneToMany(mappedBy = "cinemaHall")
     private Set<Place> places;
 
-    @OneToOne(mappedBy = "cinemaHall")
-    private FilmShow filmShow;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "cinema_id")
+    private Cinema cinema;
 
     @Override
     public String toString() {

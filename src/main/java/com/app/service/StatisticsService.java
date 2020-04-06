@@ -39,7 +39,7 @@ public class StatisticsService {
         }
 
         if (mailFileChoices.get("saveToFile")) {
-            FileService.saveToFile("City with highest number of watcher", collect);
+            FileService.saveToPDFFile("City with highest number of watcher", collect);
         }
 
         return collect;

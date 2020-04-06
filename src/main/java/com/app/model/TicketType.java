@@ -23,7 +23,7 @@ public class TicketType extends BaseEntity {
     private String name;
     private BigDecimal price;
 
-    @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "ticketType")
+    @OneToOne(mappedBy = "ticketType")
     private Ticket ticket;
 
 }

@@ -29,6 +29,6 @@ public class GetTicketDto {
                 ", user: " + user.getUsername() +
                 ", movie: " + filmShow.getMovie().getTitle() +
                 ", cinema: " + cinema.getCity() +
-                ", row: " + place.getRow() + ", number: " + place.getNumber();
+                ", row: " + place.getRow_num() + ", number: " + place.getNumber();
     }
 }

@@ -18,5 +18,4 @@ public class GetRepertoireDto {
     private LocalDate date;
     private GetCinemaDto cinema;
     private Long version;
-    private Set<GetFilmShowDto> filmShows;
 }

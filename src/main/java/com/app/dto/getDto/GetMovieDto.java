@@ -21,6 +21,4 @@ public class GetMovieDto {
     private int duration;
     private Genre genre;
     private Long version;
-    private Set<GetUserDto> usersAddedThisMovieToFavourites;
-    private Set<GetFilmShowDto> filmShows;
 }
