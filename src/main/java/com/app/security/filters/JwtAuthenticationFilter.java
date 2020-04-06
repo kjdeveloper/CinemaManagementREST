@@ -50,7 +50,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             ));
         } catch (Exception e) {
             e.printStackTrace();
-            throw new AppException("attemp authentication: " + e.getMessage());
+            throw new AppException("attempt authentication: " + e.getMessage());
         }
     }
 

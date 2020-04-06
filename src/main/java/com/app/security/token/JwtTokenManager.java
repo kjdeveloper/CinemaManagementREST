@@ -1,10 +1,10 @@
 package com.app.security.token;
 
+import com.app.dto.data.RefreshTokenDto;
 import com.app.dto.data.Tokens;
 import com.app.exception.AppException;
 import com.app.model.User;
 import com.app.repository.UserRepository;
-import lombok.Data;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
@@ -65,8 +65,54 @@ public class JwtTokenManager {
                 .build();
     }
 
+    public Tokens generateTokens(RefreshTokenDto refreshTokenDto) {
+
+        if (refreshTokenDto == null) {
+            throw new AppException("refresh token object is null");
+        }
+
+        String token = refreshTokenDto.getToken();
+        String tokenToParse = JwtConfig.ACCESS_TOKEN_PREFIX + token;
+
+        Long id = getId(tokenToParse);
+        Long expirationAccessTokenTimeInMillis = Long.parseLong(getClaims(tokenToParse).get(ACCESS_TOKEN_TIME_FOR_REFRESH_TOKEN).toString());
+
+        if (new Date(expirationAccessTokenTimeInMillis).before(new Date())) {
+            throw new AppException("cannot refresh tokens");
+        }
+
+        Date issuedTime = new Date();
+        Date expirationAccessTokenTime = new Date(System.currentTimeMillis() + JwtConfig.ACCESS_TOKEN_EXPIRATION_TIME);
+        Date expirationRefreshTokenTime = getClaims(tokenToParse).getExpiration();
+
+        String accessToken = Jwts
+                .builder()
+                .setSubject(id.toString())
+                .setIssuedAt(issuedTime)
+                .setExpiration(expirationAccessTokenTime)
+                .signWith(secretKey)
+                .compact();
+
+        String refreshToken = Jwts
+                .builder()
+                .setSubject(id.toString())
+                .setIssuedAt(issuedTime)
+                .setExpiration(expirationRefreshTokenTime)
+                .claim(ACCESS_TOKEN_TIME_FOR_REFRESH_TOKEN, expirationAccessTokenTimeInMillis)
+                .signWith(secretKey)
+                .compact();
+
+        return Tokens.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+
 
     //Parsing tokens
+
+
 
     public UsernamePasswordAuthenticationToken parseAccessToken(String token) {
         if (!token.startsWith(JwtConfig.ACCESS_TOKEN_PREFIX)) {

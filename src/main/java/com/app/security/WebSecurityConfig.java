@@ -55,8 +55,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/security/**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/security/**", "/cinema/**", "/cinemaHall/**",
+                        "/filmShow/**", "/mail/**", "/movie/**",
+                        "/repertoire/**", "/ticket/**", "/stats/**").permitAll()
+                //.anyRequest().authenticated()
 
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), userRepository, jwtTokenManager))
