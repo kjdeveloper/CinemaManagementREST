@@ -52,8 +52,8 @@ public class StatsController {
     }
 
     @GetMapping("/mostCommonTicketType")
-    public ResponseEntity<Info<Map<TicketType, Long>>> getMostCommonTicketType(@RequestBody Map<String, Boolean> mapOfChoices) {
-        return ResponseEntity.ok(Info.<Map<TicketType, Long>>builder()
+    public ResponseEntity<Info<Map<String, Long>>> getMostCommonTicketType(@RequestBody Map<String, Boolean> mapOfChoices) {
+        return ResponseEntity.ok(Info.<Map<String, Long>>builder()
                 .data(statisticsService.mostCommonTicketType(mapOfChoices))
                 .build());
     }

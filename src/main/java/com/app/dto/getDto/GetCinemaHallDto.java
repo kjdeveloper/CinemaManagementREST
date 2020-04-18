@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,9 +13,9 @@ import java.util.Set;
 public class GetCinemaHallDto {
 
     private Long id;
+    private Long version;
     private String name;
     private CinemaHallType cinemaHallType;
-    private Long version;
     private GetCinemaDto cinemaDto;
     private Integer places;
 

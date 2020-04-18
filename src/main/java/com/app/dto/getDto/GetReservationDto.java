@@ -12,5 +12,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class GetReservationDto {
+
     private Set<GetTicketDto> tickets;
 }

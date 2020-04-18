@@ -14,6 +14,5 @@ public interface RepertoireRepository extends JpaRepository<Repertoire, Long> {
 
     List<Repertoire> findByDateBetween(LocalDate from, LocalDate to);
 
-    List<Repertoire> findRepertoireByCinema_Id(Long id);
 }
 

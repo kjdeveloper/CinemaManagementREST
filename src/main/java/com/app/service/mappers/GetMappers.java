@@ -59,7 +59,8 @@ public interface GetMappers {
         return repertoire == null ? null : GetRepertoireDto.builder()
                 .id(repertoire.getId())
                 .date(repertoire.getDate())
-                .cinema(repertoire.getCinema() == null ? null : fromCinemaToGetCinemaDto(repertoire.getCinema()))
+                .cinemaDto(repertoire.getCinema() == null ? null : fromCinemaToGetCinemaDto(repertoire.getCinema()))
+                .filmShowDto(new HashSet<>())
                 .version(repertoire.getVersion())
                 .build();
     }
@@ -68,8 +69,10 @@ public interface GetMappers {
         return ticket == null ? null : GetTicketDto.builder()
                 .id(ticket.getId())
                 .version(ticket.getVersion())
+                .price(ticket.getPrice())
+                .dateOfPurchase(ticket.getDateOfPurchase())
                 .ticketTypeDto(ticket.getTicketType() == null ? null : fromTicketTypeToGetTicketTypeDto(ticket.getTicketType()))
-                .place(ticket.getPlace() == null ? null : fromPlaceToGetPlaceDto(ticket.getPlace()))
+                .places(new HashSet<>())
                 .user(ticket.getUser() == null ? null : fromUserToGetUserDto(ticket.getUser()))
                 .filmShow(ticket.getFilmShow() == null ? null : fromFilmShowToGetFilmShowDto(ticket.getFilmShow()))
                 .cinema(ticket.getCinema() == null ? null : fromCinemaToGetCinemaDto(ticket.getCinema()))
@@ -79,10 +82,7 @@ public interface GetMappers {
     static GetUserDto fromUserToGetUserDto(User user) {
         return user == null ? null : GetUserDto.builder()
                 .id(user.getId())
-                .role(user.getRoles()
-                        .stream()
-                        .map(Role::getName)
-                        .collect(Collectors.toSet()))
+                .role(new HashSet<>())
                 .version(user.getVersion())
                 .username(user.getUsername())
                 .name(user.getName())
@@ -114,8 +114,8 @@ public interface GetMappers {
     static GetHistoryTicketDto fromTicketToGetHistoryTicket(Ticket ticket) {
         return ticket == null ? null : GetHistoryTicketDto
                 .builder()
-                .version(ticket.getVersion())
                 .ticketTypeDto(ticket.getTicketType() == null ? null : fromTicketTypeToGetTicketTypeDto(ticket.getTicketType()))
+                .price(ticket.getTicketType().getPrice())
                 .filmShow(ticket.getFilmShow().getMovie().toString())
                 .build();
     }
@@ -125,7 +125,6 @@ public interface GetMappers {
                 .id(ticketType.getId())
                 .version(ticketType.getVersion())
                 .name(ticketType.getName())
-                .price(ticketType.getPrice())
                 .build();
     }
 }

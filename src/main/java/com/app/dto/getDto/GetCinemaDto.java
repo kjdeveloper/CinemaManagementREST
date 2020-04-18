@@ -15,7 +15,7 @@ import java.util.Set;
 public class GetCinemaDto {
 
     private Long id;
+    private Long version;
     private String name;
     private City city;
-    private Long version;
 }

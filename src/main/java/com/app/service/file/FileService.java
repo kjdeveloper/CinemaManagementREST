@@ -1,17 +1,20 @@
 package com.app.service.file;
 
+import com.app.dto.getDto.GetTicketDto;
+import com.app.exception.AppException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
-
+import java.time.LocalDate;
+import java.util.Objects;
 
 @Transactional
 public interface FileService {
+
 
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -42,5 +45,4 @@ public interface FileService {
             e.printStackTrace();
         }
     }
-
 }

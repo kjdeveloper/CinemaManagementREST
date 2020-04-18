@@ -28,7 +28,7 @@ public interface CreateMappers {
         return cinemaHallDto == null ? null : CinemaHall.builder()
                 .name(cinemaHallDto.getName())
                 .type(cinemaHallDto.getCinemaHallType())
-                .filmShow(cinemaHallDto.getCreateFilmShowDto() == null ? null : fromCreateFilmShowDtoToFilmShow(cinemaHallDto.getCreateFilmShowDto()))
+                .filmShow(new HashSet<>())
                 .places(new HashSet<>())
                 .build();
     }

@@ -3,6 +3,7 @@ package com.app.controller;
 import com.app.dto.createDto.CreateCinemaHallDto;
 import com.app.dto.data.Info;
 import com.app.dto.getDto.GetCinemaHallDto;
+import com.app.model.enums.CinemaHallType;
 import com.app.service.CinemaHallService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,15 @@ public class CinemaHallController {
 
     private final CinemaHallService cinemaHallService;
 
+    @GetMapping("/findCinemaHallTypes")
+    public ResponseEntity<Info<List<CinemaHallType>>> findAllCinemaHallTypes() {
+        return ResponseEntity.ok(Info.<List<CinemaHallType>>builder()
+                .data(cinemaHallService.findAllCinemaHallTypes())
+                .build());
+    }
+
     @GetMapping("/findAll")
-    public ResponseEntity<Info<List<GetCinemaHallDto>>> getAll(){
+    public ResponseEntity<Info<List<GetCinemaHallDto>>> getAll() {
         return ResponseEntity.ok(Info.<List<GetCinemaHallDto>>builder()
                 .data(cinemaHallService.findAll())
                 .build());
@@ -48,7 +56,7 @@ public class CinemaHallController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Info<Long>> update(@PathVariable Long id, @RequestBody CreateCinemaHallDto cinemaHallDto){
+    public ResponseEntity<Info<Long>> update(@PathVariable Long id, @RequestBody CreateCinemaHallDto cinemaHallDto) {
         return new ResponseEntity<>(Info.<Long>builder()
                 .data(cinemaHallService.update(id, cinemaHallDto))
                 .build(),
@@ -56,7 +64,7 @@ public class CinemaHallController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Info<Long>> deleteById(@PathVariable Long id){
+    public ResponseEntity<Info<Long>> deleteById(@PathVariable Long id) {
         return new ResponseEntity<>(Info.<Long>builder()
                 .data(cinemaHallService.deleteById(id))
                 .build(),
@@ -64,7 +72,7 @@ public class CinemaHallController {
     }
 
     @DeleteMapping("/deleteAll")
-    public ResponseEntity<Info<Long>> deleteAll(){
+    public ResponseEntity<Info<Long>> deleteAll() {
         return new ResponseEntity<>(Info.<Long>builder()
                 .data(cinemaHallService.deleteAll())
                 .build(),

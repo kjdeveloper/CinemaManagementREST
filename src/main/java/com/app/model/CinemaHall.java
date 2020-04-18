@@ -2,12 +2,13 @@ package com.app.model;
 
 import com.app.model.base.BaseEntity;
 import com.app.model.enums.CinemaHallType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -25,10 +26,10 @@ public class CinemaHall extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private CinemaHallType type;
 
-    @OneToOne(mappedBy = "cinemaHall")
-    private FilmShow filmShow;
-
     @OneToMany(mappedBy = "cinemaHall")
+    private Set<FilmShow> filmShow;
+
+    @OneToMany(mappedBy = "cinemaHall", fetch = FetchType.EAGER)
     private Set<Place> places;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

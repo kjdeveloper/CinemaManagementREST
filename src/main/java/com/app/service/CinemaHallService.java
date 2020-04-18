@@ -6,6 +6,7 @@ import com.app.exception.AppException;
 import com.app.model.Cinema;
 import com.app.model.CinemaHall;
 import com.app.model.Place;
+import com.app.model.enums.CinemaHallType;
 import com.app.repository.CinemaHallRepository;
 import com.app.repository.CinemaRepository;
 import com.app.service.mappers.CreateMappers;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -29,6 +31,11 @@ public class CinemaHallService {
 
     private final PlaceService placeService;
 
+    public List<CinemaHallType> findAllCinemaHallTypes() {
+        return Arrays
+                .stream(CinemaHallType.values())
+                .collect(Collectors.toList());
+    }
 
     public List<GetCinemaHallDto> findAll() {
         return cinemaHallRepository.findAll()
@@ -44,14 +51,14 @@ public class CinemaHallService {
         }
 
         return cinemaHallRepository
-                .findCinemaHallByCinema_Id(cinemaId)
+                .findCinemaHallsByCinema_Id(cinemaId)
                 .stream()
                 .map(GetMappers::fromCinemaHallToGetCinemaHallDto)
                 .collect(Collectors.toList());
     }
 
     public List<GetCinemaHallDto> getByName(String name) {
-        if (Objects.isNull(name)){
+        if (Objects.isNull(name)) {
             throw new AppException("Name is null");
         }
 

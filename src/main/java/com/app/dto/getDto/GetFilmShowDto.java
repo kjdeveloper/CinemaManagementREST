@@ -21,12 +21,4 @@ public class GetFilmShowDto {
     private GetMovieDto movie;
     private GetCinemaHallDto cinemaHall;
 
-    @Override
-    public String toString() {
-        return "Film show : " +
-                ", start time: " + startTime +
-                ", tickets available: " + ticketsAvailable +
-                ", movie: " + movie +
-                ", cinemaHall: " + cinemaHall.getName();
-    }
 }

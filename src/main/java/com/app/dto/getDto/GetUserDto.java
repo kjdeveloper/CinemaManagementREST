@@ -14,10 +14,11 @@ import java.util.Set;
 public class GetUserDto {
 
     private Long id;
+    private Long version;
     private String name;
     private String username;
     private Integer age;
     private String email;
     private Set<String> role;
-    private Long version;
+
 }

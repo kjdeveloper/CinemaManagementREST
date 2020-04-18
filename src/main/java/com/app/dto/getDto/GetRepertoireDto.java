@@ -15,7 +15,8 @@ import java.util.Set;
 public class GetRepertoireDto {
 
     private Long id;
-    private LocalDate date;
-    private GetCinemaDto cinema;
     private Long version;
+    private LocalDate date;
+    private GetCinemaDto cinemaDto;
+    private Set<GetFilmShowDto> filmShowDto;
 }

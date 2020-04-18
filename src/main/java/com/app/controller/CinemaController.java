@@ -3,6 +3,7 @@ package com.app.controller;
 import com.app.dto.createDto.CreateCinemaDto;
 import com.app.dto.data.Info;
 import com.app.dto.getDto.GetCinemaDto;
+import com.app.model.enums.City;
 import com.app.service.CinemaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,14 @@ import java.util.List;
 public class CinemaController {
 
     private final CinemaService cinemaService;
+
+    @GetMapping("/findAllCities")
+    public ResponseEntity<Info<List<City>>> findAllCities() {
+        return ResponseEntity.ok(Info.<List<City>>builder()
+                .data(cinemaService.findAllCities())
+                .build());
+    }
+
 
     @GetMapping("/findAll")
     public ResponseEntity<Info<List<GetCinemaDto>>> getAll() {
@@ -64,6 +73,4 @@ public class CinemaController {
                 .build(),
                 HttpStatus.OK);
     }
-
-
 }

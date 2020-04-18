@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CreateReservationDto {
 
-    private Long userId;
     private Long filmShowId;
     private Long placeId;
     private Long ticketTypeId;

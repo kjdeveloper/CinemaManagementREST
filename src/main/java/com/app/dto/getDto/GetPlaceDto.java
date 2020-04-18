@@ -12,9 +12,10 @@ import lombok.NoArgsConstructor;
 public class GetPlaceDto {
 
     private Long id;
+    private Long version;
     private boolean available;
     private Integer row_num;
     private Integer number;
-    private Long version;
+
 
 }

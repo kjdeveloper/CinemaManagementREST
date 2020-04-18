@@ -4,6 +4,7 @@ import com.app.dto.createDto.CreateCinemaDto;
 import com.app.dto.getDto.GetCinemaDto;
 import com.app.exception.AppException;
 import com.app.model.Cinema;
+import com.app.model.enums.City;
 import com.app.repository.CinemaHallRepository;
 import com.app.repository.CinemaRepository;
 import com.app.repository.RepertoireRepository;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -25,6 +27,12 @@ public class CinemaService {
     private final CinemaRepository cinemaRepository;
     private final CinemaHallRepository cinemaHallRepository;
     private final RepertoireRepository repertoireRepository;
+
+    public List<City> findAllCities() {
+        return Arrays
+                .stream(City.values())
+                .collect(Collectors.toList());
+    }
 
     public List<GetCinemaDto> findAll() {
         return cinemaRepository.findAll()
@@ -90,7 +98,7 @@ public class CinemaService {
         repertoireRepository.findByCinema_Id(id)
                 .forEach(r -> r.setCinema(null));
 
-        cinemaHallRepository.findCinemaHallByCinema_Id(id)
+        cinemaHallRepository.findCinemaHallsByCinema_Id(id)
                 .forEach(c -> c.setCinema(null));
 
         cinemaRepository.delete(cinema);

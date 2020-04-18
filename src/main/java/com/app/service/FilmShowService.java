@@ -3,10 +3,7 @@ package com.app.service;
 import com.app.dto.createDto.CreateFilmShowDto;
 import com.app.dto.getDto.GetFilmShowDto;
 import com.app.exception.AppException;
-import com.app.model.CinemaHall;
-import com.app.model.FilmShow;
-import com.app.model.Movie;
-import com.app.model.Repertoire;
+import com.app.model.*;
 import com.app.repository.*;
 import com.app.service.mappers.CreateMappers;
 import com.app.service.mappers.GetMappers;
@@ -65,8 +62,8 @@ public class FilmShowService {
     }
 
     private List<GetFilmShowDto> isCinemaHallAvailable(CreateFilmShowDto createFilmShowDto) {
-        if (Objects.isNull(createFilmShowDto)) {
-            throw new AppException("Cinema hall is is null");
+        if (Objects.isNull(createFilmShowDto.getCinemaHallId())) {
+            throw new AppException("Cinema hall is null");
         }
         return filmShowRepository
                 .findByCinemaHall_Id(createFilmShowDto.getCinemaHallId())
@@ -81,18 +78,21 @@ public class FilmShowService {
             throw new AppException("Film show is null");
         }
 
-        if (!isCinemaHallAvailable(createFilmShowDto).isEmpty()){
+        if (!isCinemaHallAvailable(createFilmShowDto).isEmpty()) {
             throw new AppException("Film show in this cinema hall and at this time already exists");
         }
 
         Repertoire repertoire = repertoireRepository.findById(createFilmShowDto.getRepertoireId())
                 .orElseThrow(() -> new AppException("Repertoire with given id doesn't exist"));
 
-        if (repertoire.getDate().compareTo(createFilmShowDto.getStartTime().toLocalDate()) != 0){
+        if (repertoire.getDate().compareTo(createFilmShowDto.getStartTime().toLocalDate()) != 0) {
             throw new AppException("Wrong date");
         }
 
-        CinemaHall cinemaHall = cinemaHallRepository.findById(createFilmShowDto.getCinemaHallId())
+        CinemaHall cinemaHall = cinemaHallRepository.findCinemaHallsByCinema_Id(repertoire.getCinema().getId())
+                .stream()
+                .filter(cinemaHall2 -> cinemaHall2.getId().equals(createFilmShowDto.getCinemaHallId()))
+                .findFirst()
                 .orElseThrow(() -> new AppException("Cinema has not cinema hall with given id"));
 
         Movie movie = movieRepository.findById(createFilmShowDto.getMovieId())

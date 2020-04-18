@@ -32,7 +32,11 @@ public class MovieService {
     private final UserRepository userRepository;
     private final FilmShowRepository filmShowRepository;
 
-    private final FilmShowService filmShowService;
+    public List<Genre> getAllGenres() {
+        return Arrays
+                .stream(Genre.values())
+                .collect(Collectors.toList());
+    }
 
     public List<GetMovieDto> findAll() {
         return movieRepository.findAll()

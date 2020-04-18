@@ -131,10 +131,11 @@ public class StatisticsService {
         return collect;
     }
 
-    public Map<TicketType, Long> mostCommonTicketType(Map<String, Boolean> mailFileChoices) {
-        final Map<TicketType, Long> collect = ticketRepository.findAll()
+    public Map<String, Long> mostCommonTicketType(Map<String, Boolean> mailFileChoices) {
+        final Map<String, Long> collect = ticketRepository.findAll()
                 .stream()
-                .collect(Collectors.groupingBy(Ticket::getTicketType,
+                .map(Ticket::getTicketType)
+                .collect(Collectors.groupingBy(TicketType::getName,
                         Collectors.counting()));
 
         if (mailFileChoices.get("sendMail")) {

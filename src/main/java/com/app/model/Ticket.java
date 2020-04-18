@@ -9,6 +9,8 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,14 +23,16 @@ import java.math.BigDecimal;
 public class Ticket extends BaseEntity {
 
     private Boolean reservation;
+    private LocalDate dateOfPurchase;
+    private Long placeId;
+    private BigDecimal price;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "ticket", fetch = FetchType.EAGER)
+    private Set<Place> places;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ticket_type_id")
     private TicketType ticketType;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "place_id")
-    private Place place;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "filmShow_id")
@@ -47,8 +51,7 @@ public class Ticket extends BaseEntity {
         return "Ticket: " +
                 ", ticketType: " + ticketType +
                 "price: " + ticketType.getPrice() +
-                ", place: row: " + place.getRowNum() +
-                ", place: number: " + place.getNumber() +
+                ", places: " + places +
                 ", film show: " + filmShow.getMovie() +
                 ", film show time: " + filmShow.getStartTime() +
                 ", cinema: " + cinema.getName() +

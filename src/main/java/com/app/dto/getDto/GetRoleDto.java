@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class GetRoleDto {
+
     private Long id;
-    private String name;
     private Long version;
+    private String name;
 }

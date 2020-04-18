@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -15,20 +17,25 @@ public class GetTicketDto {
 
     private Long id;
     private Long version;
+    private LocalDate dateOfPurchase;
     private BigDecimal price;
     private GetUserDto user;
     private GetFilmShowDto filmShow;
     private GetCinemaDto cinema;
-    private GetPlaceDto place;
+    private Set<GetPlaceDto> places;
     private GetTicketTypeDto ticketTypeDto;
 
     @Override
     public String toString() {
-        return "Ticket " +
-                "price: " + getTicketTypeDto().getPrice() +
+        return "Ticket(s): " +
+                ", date of purchase: " + dateOfPurchase +
+                ", price: " + price +
                 ", user: " + user.getUsername() +
-                ", movie: " + filmShow.getMovie().getTitle() +
-                ", cinema: " + cinema.getCity() +
-                ", row: " + place.getRow_num() + ", number: " + place.getNumber();
+                ", filmShow: " + filmShow.getMovie() +
+                ", time: " + filmShow.getStartTime() +
+                ", cinema: " + cinema.getName() +
+                " in " + cinema.getCity() +
+                ", places: " + places +
+                ", ticket type: " + ticketTypeDto;
     }
 }

@@ -16,6 +16,4 @@ public class CreateCinemaHallDto {
     private Long id;
     private String name;
     private CinemaHallType cinemaHallType;
-    private CreateFilmShowDto createFilmShowDto;
-
 }

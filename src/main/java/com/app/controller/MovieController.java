@@ -21,6 +21,13 @@ public class MovieController {
 
     private final MovieService movieService;
 
+    @GetMapping("/findAllGenres")
+    public ResponseEntity<Info<List<Genre>>> getAllGenres() {
+        return ResponseEntity.ok(Info.<List<Genre>>builder()
+                .data(movieService.getAllGenres())
+                .build());
+    }
+
     @GetMapping("/findAll")
     public ResponseEntity<Info<List<GetMovieDto>>> getAllMovies() {
         return ResponseEntity.ok(Info.<List<GetMovieDto>>builder()
@@ -72,16 +79,16 @@ public class MovieController {
                 .build(),
                 HttpStatus.OK);
     }
-        //dorobic post
-    @PostMapping("/addToFavourite/{userId}/{movieId}")
+
+    @PostMapping("/addToFavourites/{userId}/{movieId}")
     public ResponseEntity<Info<Long>> addToFavourites(@PathVariable Long userId, @PathVariable Long movieId) {
         return new ResponseEntity<>(Info.<Long>builder()
                 .data(movieService.addToFavourites(userId, movieId))
                 .build(),
                 HttpStatus.OK);
     }
-        //dorobic post
-    @DeleteMapping("/{userId}/{movieId}")
+
+    @DeleteMapping("/deleteFromFavourites/{userId}/{movieId}")
     public ResponseEntity<Info<Long>> deleteMovieFromFavourites(@PathVariable Long userId, @PathVariable Long movieId) {
         return new ResponseEntity<>(Info.<Long>builder()
                 .data(movieService.deleteFromFavourites(userId, movieId))

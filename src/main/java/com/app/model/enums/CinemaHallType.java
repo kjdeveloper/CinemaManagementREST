@@ -9,7 +9,7 @@ public enum CinemaHallType {
 
     VIP(5, 10), SMALL(3, 10), MEDIUM(10, 10), BIG(20, 15);
 
-    private int rowNum;
-    private int number;
+    private final int rowNum;
+    private final int number;
 
 }

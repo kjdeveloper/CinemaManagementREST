@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface CinemaHallRepository extends JpaRepository<CinemaHall, Long> {
 
-    List<CinemaHall> findCinemaHallByCinema_Id(Long id);
+    List<CinemaHall> findCinemaHallsByCinema_Id(Long id);
 
     List<CinemaHall> findAllByName(String name);
 

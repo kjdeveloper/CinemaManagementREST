@@ -16,5 +16,9 @@ public class GetTicketTypeDto {
     private Long id;
     private Long version;
     private String name;
-    private BigDecimal price;
+
+    @Override
+    public String toString() {
+        return  " " + name + " ";
+    }
 }

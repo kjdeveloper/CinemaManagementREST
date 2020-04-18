@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,10 +13,11 @@ import java.util.Set;
 public class GetMovieDto {
 
     private Long id;
+    private Long version;
     private String title;
     private String description;
     private String director;
     private int duration;
     private Genre genre;
-    private Long version;
+
 }

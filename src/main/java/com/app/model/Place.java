@@ -1,7 +1,10 @@
 package com.app.model;
 
 import com.app.model.base.BaseEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -22,7 +25,8 @@ public class Place extends BaseEntity {
     private Integer rowNum;
     private Integer number;
 
-    @OneToOne(mappedBy = "place")
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

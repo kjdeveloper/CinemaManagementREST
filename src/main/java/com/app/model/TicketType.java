@@ -4,11 +4,9 @@ import com.app.model.base.BaseEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,7 +21,7 @@ public class TicketType extends BaseEntity {
     private String name;
     private BigDecimal price;
 
-    @OneToOne(mappedBy = "ticketType")
-    private Ticket ticket;
+    @OneToMany(mappedBy = "ticketType")
+    private Set<Ticket> tickets;
 
 }
